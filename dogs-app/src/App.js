@@ -1,8 +1,5 @@
-import { useState } from "react";
 import "./App.css";
-
-const api_key =
-  "***REMOVED***";
+import { DogDisplay } from "./DogDisplay.tsx";
 
 function App() {
   return (
@@ -14,28 +11,5 @@ function App() {
     </div>
   );
 }
-
-const DogDisplay = () => {
-  const [imageUrl, setImageUrl] = useState("");
-
-  const getDog = () => {
-    fetch(`https://api.thedogapi.com/v1/images/search?api_key=${api_key}`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setImageUrl(data[0].url);
-      });
-  };
-
-  return (
-    <div className="dog-display-container">
-      <div className="dog-image-container">
-        <img className="dog-image" src={imageUrl} />
-      </div>
-      <button onClick={getDog}>Get New Dog</button>
-    </div>
-  );
-};
 
 export default App;
