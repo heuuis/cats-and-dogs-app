@@ -1,5 +1,7 @@
+import { Button } from "@mui/material";
 import React from "react";
 import { useEffect, useState } from "react";
+import PetsIcon from "@mui/icons-material/Pets";
 
 const apiKey =
   "live_mrlCAiUTEa97Yw0bIXLgim39NQBmepZBq0tBXZ7vYQwy93wUjE25nyYRuzYNlsch";
@@ -55,7 +57,9 @@ export const DogDisplay = () => {
           />
         )}
       </div>
-      <button onClick={handleClick}>Get New Dog</button>
+      <Button variant="outlined" startIcon={<PetsIcon />} onClick={handleClick}>
+        Get New Dog
+      </Button>
     </div>
   );
 };
