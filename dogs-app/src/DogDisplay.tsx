@@ -3,11 +3,11 @@ import React from "react";
 import { useEffect, useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
 
-const apiKey =
+const dogApiKey =
   "live_mrlCAiUTEa97Yw0bIXLgim39NQBmepZBq0tBXZ7vYQwy93wUjE25nyYRuzYNlsch";
 const dogApiUrl = "https://api.thedogapi.com";
 const getDogsQuery = (n: number) => {
-  return `${dogApiUrl}/v1/images/search?limit=${n}&api_key=${apiKey}`;
+  return `${dogApiUrl}/v1/images/search?limit=${n}&api_key=${dogApiKey}`;
 };
 
 export const DogDisplay = () => {
@@ -54,13 +54,13 @@ export const DogDisplay = () => {
   };
 
   return (
-    <div className="dog-display-container">
-      <div className="dog-image-container">
+    <div className="animal-display-container">
+      <div className="image-container">
         {isLoading && dogCounter === 0 ? (
           <p>Loading your dogs...</p>
         ) : (
           <img
-            className="dog-image"
+            className="image"
             src={imageUrls[dogCounter] || ""}
             alt="Dog"
             onLoad={handleImageLoad}
