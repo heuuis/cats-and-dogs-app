@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface ImageDisplayProps {
+interface ImageDisplayProps {
   imageUrl?: string;
   loadingText?: string;
   altText?: string;

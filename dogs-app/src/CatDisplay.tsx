@@ -15,7 +15,6 @@ export const CatDisplay = () => {
   const [imageUrls, setImageUrls] = useState([] as string[]);
   const [catCounter, setCatCounter] = useState(0);
   const [catsSeen, setCatsSeen] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [imageRendered, setImageRendered] = useState(false);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export const CatDisplay = () => {
       catCounter === 0 || (catCounter % 5 === 0 && catCounter % 10 !== 0);
 
     if (shouldFetchCats) {
-      setIsLoading(true);
       getCats()
         .then((newImageUrls) => {
           setImageUrls((prevImageUrls) => [...prevImageUrls, ...newImageUrls]);
@@ -31,9 +29,6 @@ export const CatDisplay = () => {
         })
         .catch((error) => {
           console.error("Error fetching cat images:", error);
-        })
-        .finally(() => {
-          setIsLoading(false);
         });
     }
   }, [catCounter]);
@@ -59,7 +54,7 @@ export const CatDisplay = () => {
         loadingText="Loading your cats..."
         altText="Cat"
         onImageLoad={handleImageLoad}
-      ></ImageDisplay>
+      />
       {catsSeen < 2 ? null : (
         <p>You've seen {catsSeen} cats already... Want more?</p>
       )}
