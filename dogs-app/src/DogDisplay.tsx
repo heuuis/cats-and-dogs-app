@@ -18,19 +18,20 @@ export const DogDisplay = () => {
   const [imageRendered, setImageRendered] = useState(false);
 
   useEffect(() => {
-    if (dogCounter == 0 || (dogCounter % 5 === 0 && dogCounter % 10 !== 0)) {
+    const shouldFetchDogs =
+      dogCounter === 0 || (dogCounter % 5 === 0 && dogCounter % 10 !== 0);
+
+    if (shouldFetchDogs) {
       setIsLoading(true);
       getDogs()
         .then((newImageUrls) => {
-          setImageUrls((prevImageUrls: string[]) => [
-            ...prevImageUrls,
-            ...newImageUrls,
-          ]);
+          setImageUrls((prevImageUrls) => [...prevImageUrls, ...newImageUrls]);
           console.log("Got more dogs!");
-          setIsLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching dog images:", error);
+        })
+        .finally(() => {
           setIsLoading(false);
         });
     }
