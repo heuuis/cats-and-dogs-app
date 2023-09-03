@@ -13,7 +13,9 @@ const getDogsQuery = (n: number) => {
 export const DogDisplay = () => {
   const [imageUrls, setImageUrls] = useState([] as string[]);
   const [dogCounter, setDogCounter] = useState(0);
+  const [dogsSeen, setDogsSeen] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [imageRendered, setImageRendered] = useState(false);
 
   useEffect(() => {
     if (dogCounter == 0 || (dogCounter % 5 === 0 && dogCounter % 10 !== 0)) {
@@ -42,6 +44,12 @@ export const DogDisplay = () => {
 
   const handleClick = () => {
     setDogCounter(dogCounter + 1);
+    setImageRendered(false);
+  };
+
+  const handleImageLoad = () => {
+    setDogsSeen(dogsSeen + 1);
+    setImageRendered(true);
   };
 
   return (
@@ -54,10 +62,19 @@ export const DogDisplay = () => {
             className="dog-image"
             src={imageUrls[dogCounter] || ""}
             alt="Dog"
+            onLoad={handleImageLoad}
           />
         )}
       </div>
-      <Button variant="outlined" startIcon={<PetsIcon />} onClick={handleClick}>
+      {dogsSeen < 2 ? null : (
+        <p>You've seen {dogsSeen} dogs already... Want more?</p>
+      )}
+      <Button
+        variant="outlined"
+        startIcon={<PetsIcon />}
+        onClick={handleClick}
+        disabled={!imageRendered}
+      >
         Get New Dog
       </Button>
     </div>
