@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useEffect, useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
+import { ImageDisplay } from "./ImageDisplay.tsx";
 
 const dogApiKey =
   "live_mrlCAiUTEa97Yw0bIXLgim39NQBmepZBq0tBXZ7vYQwy93wUjE25nyYRuzYNlsch";
@@ -14,7 +15,6 @@ export const DogDisplay = () => {
   const [imageUrls, setImageUrls] = useState([] as string[]);
   const [dogCounter, setDogCounter] = useState(0);
   const [dogsSeen, setDogsSeen] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [imageRendered, setImageRendered] = useState(false);
 
   useEffect(() => {
@@ -22,7 +22,6 @@ export const DogDisplay = () => {
       dogCounter === 0 || (dogCounter % 5 === 0 && dogCounter % 10 !== 0);
 
     if (shouldFetchDogs) {
-      setIsLoading(true);
       getDogs()
         .then((newImageUrls) => {
           setImageUrls((prevImageUrls) => [...prevImageUrls, ...newImageUrls]);
@@ -30,9 +29,6 @@ export const DogDisplay = () => {
         })
         .catch((error) => {
           console.error("Error fetching dog images:", error);
-        })
-        .finally(() => {
-          setIsLoading(false);
         });
     }
   }, [dogCounter]);
@@ -55,18 +51,12 @@ export const DogDisplay = () => {
 
   return (
     <div className="animal-display-container">
-      <div className="image-container">
-        {isLoading && dogCounter === 0 ? (
-          <p>Loading your dogs...</p>
-        ) : (
-          <img
-            className="image"
-            src={imageUrls[dogCounter] || ""}
-            alt="Dog"
-            onLoad={handleImageLoad}
-          />
-        )}
-      </div>
+      <ImageDisplay
+        imageUrl={imageUrls[dogCounter] || ""}
+        loadingText="Loading your dogs..."
+        altText="Dog"
+        onImageLoad={handleImageLoad}
+      />
       {dogsSeen < 2 ? null : (
         <p>You've seen {dogsSeen} dogs already... Want more?</p>
       )}
