@@ -1,4 +1,4 @@
-import { AnimalImageDisplay } from "./AnimalImageDisplay";
+import { AnimalImageDisplay } from "./animal-image-display";
 
 const dogApiKey =
   "live_mrlCAiUTEa97Yw0bIXLgim39NQBmepZBq0tBXZ7vYQwy93wUjE25nyYRuzYNlsch";

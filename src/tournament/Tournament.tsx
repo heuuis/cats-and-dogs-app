@@ -1,5 +1,5 @@
-import { CatImageDisplay } from "../image-display/CatImageDisplay";
-import { DogImageDisplay } from "../image-display/DogImageDisplay";
+import { CatImageDisplay } from "../image-display/cat-image-display";
+import { DogImageDisplay } from "../image-display/dog-image-display";
 
 export const Tournament = () => {
   return (

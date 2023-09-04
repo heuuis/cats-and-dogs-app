@@ -1,13 +1,16 @@
 import "./App.css";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./Theme";
-import { Tournament } from "./tournament/Tournament";
+import { Routes, Route } from "react-router-dom";
+import { Tournament } from "./tournament/tournament";
+import { Cats } from "./cats/cats";
+import { Dogs } from "./dogs/dogs";
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Tournament />
-    </ThemeProvider>
+    <Routes>
+      <Route path="/" element={<Tournament />} />
+      <Route path="cats" element={<Cats />} />
+      <Route path="dogs" element={<Dogs />} />
+    </Routes>
   );
 }
 

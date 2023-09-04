@@ -1,4 +1,4 @@
-import { AnimalImageDisplay } from "./AnimalImageDisplay";
+import { AnimalImageDisplay } from "./animal-image-display";
 
 const catApiKey =
   "live_oWZmpYEWR0WIqJtXXGJrZDYMu7K2Ulmjgy1hEB9pHCTubTxxdbdV6ABT6lJcZKWr";

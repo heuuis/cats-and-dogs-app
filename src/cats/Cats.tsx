@@ -1,4 +1,4 @@
-import { CatImageDisplay } from "../image-display/CatImageDisplay";
+import { CatImageDisplay } from "../image-display/cat-image-display";
 
 export const Cats = () => {
   return (
