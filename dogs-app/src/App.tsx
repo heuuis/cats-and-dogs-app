@@ -22,7 +22,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <div className="App">
         <header className="App-header">
-          <h1>Dogs App!</h1>
+          <h1>Tournament of Cuteness!</h1>
         </header>
         <div className="content-wrapper">
           <div className="left-half">
