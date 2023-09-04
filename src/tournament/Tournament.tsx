@@ -1,3 +1,4 @@
+import "./tournament.css";
 import { CatImageDisplay } from "../image-display/cat-image-display";
 import { DogImageDisplay } from "../image-display/dog-image-display";
 

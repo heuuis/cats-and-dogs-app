@@ -1,0 +1,22 @@
+.content-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+.left-half {
+  flex: 1;
+  background-color: #c8c8c8;
+  position: absolute;
+  left: 0px;
+  height: 100%;
+  width: 50%;
+}
+
+.right-half {
+  flex: 1;
+  background-color: #b4b4b4;
+  position: absolute;
+  right: 0px;
+  height: 100%;
+  width: 50%;
+}

@@ -1,3 +1,4 @@
+import "./dogs.css";
 import { DogImageDisplay } from "../image-display/dog-image-display";
 
 export const Dogs = () => {
@@ -6,7 +7,9 @@ export const Dogs = () => {
       <header className="App-header">
         <h1>Dogs!</h1>
       </header>
-      <DogImageDisplay />
+      <body className="dogs-page">
+        <DogImageDisplay />
+      </body>
     </div>
   );
 };
