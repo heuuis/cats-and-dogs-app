@@ -17,11 +17,17 @@ export const AnimalImageDisplay = ({
   getAnimalImagesQuery,
 }: AnimalDisplayProps) => {
   const [imageUrls, setImageUrls] = useState([] as string[]);
-  const [animalCounter, setAnimalCounter] = useState(0);
+  const [animalCounter, setAnimalCounter] = useState(-1);
   const [animalsSeen, setAnimalsSeen] = useState(0);
   const [imageRendered, setImageRendered] = useState(false);
 
   useEffect(() => {
+    const getAnimals: () => Promise<string[]> = async () => {
+      const response = await fetch(getAnimalImagesQuery(10));
+      const data: Image[] = await response.json();
+      return data.map((item: Image) => item.url);
+    };
+
     const shouldFetchAnimals =
       animalCounter === 0 ||
       (animalCounter % 5 === 0 && animalCounter % 10 !== 0);
@@ -36,12 +42,7 @@ export const AnimalImageDisplay = ({
           console.error(`Error fetching ${animalName} images:`, error);
         });
     }
-  }, [animalCounter]);
-  const getAnimals: () => Promise<string[]> = async () => {
-    const response = await fetch(getAnimalImagesQuery(10));
-    const data: Image[] = await response.json();
-    return data.map((item: Image) => item.url);
-  };
+  }, [animalCounter, animalName, getAnimalImagesQuery]);
 
   const handleClick = () => {
     setAnimalCounter(animalCounter + 1);
@@ -55,25 +56,37 @@ export const AnimalImageDisplay = ({
 
   return (
     <div className="animal-display-container">
-      <ImageDisplay
-        imageUrl={imageUrls[animalCounter] || ""}
-        loadingText={`Loading your ${animalName}s...`}
-        altText={animalName}
-        onImageLoad={handleImageLoad}
-      />
-      {animalsSeen < 2 ? null : (
-        <p>
-          You've seen {animalsSeen} {animalName}s already... Want more?
-        </p>
+      {animalCounter === -1 ? (
+        <Button
+          variant="contained"
+          startIcon={<PetsIcon />}
+          onClick={handleClick}
+        >
+          Get your first {animalName}!
+        </Button>
+      ) : (
+        <div>
+          <ImageDisplay
+            imageUrl={imageUrls[animalCounter] || ""}
+            loadingText={`Loading your ${animalName}s...`}
+            altText={animalName}
+            onImageLoad={handleImageLoad}
+          />
+          {animalsSeen < 2 ? null : (
+            <p>
+              You've seen {animalsSeen} {animalName}s already... Want more?
+            </p>
+          )}
+          <Button
+            variant="outlined"
+            startIcon={<PetsIcon />}
+            onClick={handleClick}
+            disabled={!imageRendered}
+          >
+            Get New {capitalise(animalName)}
+          </Button>
+        </div>
       )}
-      <Button
-        variant="outlined"
-        startIcon={<PetsIcon />}
-        onClick={handleClick}
-        disabled={!imageRendered}
-      >
-        Get New {capitalise(animalName)}
-      </Button>
     </div>
   );
 };
