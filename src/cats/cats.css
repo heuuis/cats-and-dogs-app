@@ -1,0 +1,5 @@
+.cats-page {
+  flex-direction: column;
+  background-color: #c8c8c8;
+  height: 100%;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import "./image-display.css";
 
 interface ImageDisplayProps {
   imageUrl?: string;

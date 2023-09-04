@@ -1,3 +1,4 @@
+import "./cats.css";
 import { CatImageDisplay } from "../image-display/cat-image-display";
 
 export const Cats = () => {
@@ -6,7 +7,9 @@ export const Cats = () => {
       <header className="App-header">
         <h1>Cats!</h1>
       </header>
-      <CatImageDisplay />
+      <body className="cats-page">
+        <CatImageDisplay />
+      </body>
     </div>
   );
 };
