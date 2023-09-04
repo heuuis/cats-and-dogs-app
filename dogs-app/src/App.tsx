@@ -1,19 +1,19 @@
 import "./App.css";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Theme";
-import { AnimalImageDisplay } from "./AnimalImageDisplay.tsx";
+import { AnimalImageDisplay } from "./AnimalImageDisplay";
 
 const catApiKey =
   "live_oWZmpYEWR0WIqJtXXGJrZDYMu7K2Ulmjgy1hEB9pHCTubTxxdbdV6ABT6lJcZKWr";
 const catApiUrl = "https://api.thecatapi.com";
-const getCatImagesQuery = (n) => {
+const getCatImagesQuery = (n: number) => {
   return `${catApiUrl}/v1/images/search?limit=${n}&api_key=${catApiKey}`;
 };
 
 const dogApiKey =
   "live_mrlCAiUTEa97Yw0bIXLgim39NQBmepZBq0tBXZ7vYQwy93wUjE25nyYRuzYNlsch";
 const dogApiUrl = "https://api.thedogapi.com";
-const getDogImagesQuery = (n) => {
+const getDogImagesQuery = (n: number) => {
   return `${dogApiUrl}/v1/images/search?limit=${n}&api_key=${dogApiKey}`;
 };
 
