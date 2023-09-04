@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import React from "react";
 import { useEffect, useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
 import { ImageDisplay } from "./ImageDisplay";
