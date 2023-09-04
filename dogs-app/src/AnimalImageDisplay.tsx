@@ -6,15 +6,15 @@ import { ImageDisplay } from "./ImageDisplay.tsx";
 
 interface AnimalDisplayProps {
   animalName: string;
-  getAnimalsQuery: (n: number) => string;
+  getAnimalImagesQuery: (n: number) => string;
 }
 
 const capitalise = (str: string) =>
   str.length === 0 ? str : str.charAt(0).toUpperCase() + str.slice(1);
 
-export const AnimalDisplay = ({
+export const AnimalImageDisplay = ({
   animalName,
-  getAnimalsQuery,
+  getAnimalImagesQuery,
 }: AnimalDisplayProps) => {
   const [imageUrls, setImageUrls] = useState([] as string[]);
   const [animalCounter, setAnimalCounter] = useState(0);
@@ -38,7 +38,7 @@ export const AnimalDisplay = ({
     }
   }, [animalCounter]);
   const getAnimals: () => Promise<string[]> = async () => {
-    const response = await fetch(getAnimalsQuery(10));
+    const response = await fetch(getAnimalImagesQuery(10));
     const data: Image[] = await response.json();
     return data.map((item: Image) => item.url);
   };

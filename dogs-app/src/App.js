@@ -1,8 +1,21 @@
 import "./App.css";
 import { ThemeProvider } from "@mui/material/styles";
-import { DogDisplay } from "./DogDisplay.tsx";
 import theme from "./Theme";
-import { CatDisplay } from "./CatDisplay.tsx";
+import { AnimalImageDisplay } from "./AnimalImageDisplay.tsx";
+
+const catApiKey =
+  "live_oWZmpYEWR0WIqJtXXGJrZDYMu7K2Ulmjgy1hEB9pHCTubTxxdbdV6ABT6lJcZKWr";
+const catApiUrl = "https://api.thecatapi.com";
+const getCatImagesQuery = (n) => {
+  return `${catApiUrl}/v1/images/search?limit=${n}&api_key=${catApiKey}`;
+};
+
+const dogApiKey =
+  "live_mrlCAiUTEa97Yw0bIXLgim39NQBmepZBq0tBXZ7vYQwy93wUjE25nyYRuzYNlsch";
+const dogApiUrl = "https://api.thedogapi.com";
+const getDogImagesQuery = (n) => {
+  return `${dogApiUrl}/v1/images/search?limit=${n}&api_key=${dogApiKey}`;
+};
 
 function App() {
   return (
@@ -13,10 +26,16 @@ function App() {
         </header>
         <div className="content-wrapper">
           <div className="left-half">
-            <DogDisplay />
+            <AnimalImageDisplay
+              animalName="cat"
+              getAnimalImagesQuery={getCatImagesQuery}
+            />
           </div>
           <div className="right-half">
-            <CatDisplay />
+            <AnimalImageDisplay
+              animalName="dog"
+              getAnimalImagesQuery={getDogImagesQuery}
+            />
           </div>
         </div>
       </div>
