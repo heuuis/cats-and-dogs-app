@@ -1,44 +1,12 @@
 import "./App.css";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Theme";
-import { AnimalImageDisplay } from "./AnimalImageDisplay";
-
-const catApiKey =
-  "***REMOVED***";
-const catApiUrl = "https://api.thecatapi.com";
-const getCatImagesQuery = (n: number) => {
-  return `${catApiUrl}/v1/images/search?limit=${n}&api_key=${catApiKey}`;
-};
-
-const dogApiKey =
-  "***REMOVED***";
-const dogApiUrl = "https://api.thedogapi.com";
-const getDogImagesQuery = (n: number) => {
-  return `${dogApiUrl}/v1/images/search?limit=${n}&api_key=${dogApiKey}`;
-};
+import { Tournament } from "./tournament/Tournament";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <header className="App-header">
-          <h1>Tournament of Cuteness!</h1>
-        </header>
-        <div className="content-wrapper">
-          <div className="left-half">
-            <AnimalImageDisplay
-              animalName="cat"
-              getAnimalImagesQuery={getCatImagesQuery}
-            />
-          </div>
-          <div className="right-half">
-            <AnimalImageDisplay
-              animalName="dog"
-              getAnimalImagesQuery={getDogImagesQuery}
-            />
-          </div>
-        </div>
-      </div>
+      <Tournament />
     </ThemeProvider>
   );
 }
