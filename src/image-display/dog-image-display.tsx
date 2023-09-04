@@ -1,4 +1,4 @@
-import { AnimalImageDisplay } from "./AnimalImageDisplay";
+import { AnimalImageDisplay } from "./animal-image-display";
 
 const dogApiKey =
   "***REMOVED***";

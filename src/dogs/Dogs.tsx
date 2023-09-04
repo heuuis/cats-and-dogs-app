@@ -1,4 +1,4 @@
-import { DogImageDisplay } from "../image-display/DogImageDisplay";
+import { DogImageDisplay } from "../image-display/dog-image-display";
 
 export const Dogs = () => {
   return (

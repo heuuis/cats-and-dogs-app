@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
-import { ImageDisplay } from "./ImageDisplay";
+import { ImageDisplay } from "./image-display";
 
 interface AnimalDisplayProps {
   animalName: string;
