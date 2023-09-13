@@ -40,11 +40,12 @@ main {
 }
 
 .navbar {
-  width: 6rem;
-  height: 100vh;
   position: fixed;
   background-color: var(--bg-navbar);
-  transition: width 200ms ease;
+  transition: width 400ms ease;
+  width: 6rem;
+  height: 100vh;
+  overflow: scroll;
 }
 
 .navbar-nav {
@@ -91,7 +92,7 @@ main {
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 1rem;
-  text-align: left;
+  text-align: center;
   color: var(--text-secondary);
   background: var(--bg-navbar);
   font-size: 1.5rem;
@@ -106,7 +107,7 @@ main {
 
 .logo-text {
   display: inline;
-  position: absolute;
+  /* position: absolute; */
   left: -999px;
   transition: var(--transition-speed);
 }
@@ -116,7 +117,7 @@ main {
 }
 
 .navbar:hover {
-  width: 12rem;
+  width: 16rem;
 }
 
 .navbar:hover .link-text {
