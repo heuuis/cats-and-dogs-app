@@ -47,7 +47,7 @@ main {
   width: 6rem;
   height: 100vh;
   overflow: scroll;
-  &:hover {
+  &:not(.disable-hover):hover {
     .logo {
       svg {
         transform: rotate(-180deg);
