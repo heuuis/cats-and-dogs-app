@@ -18,23 +18,27 @@ function App() {
       <nav className="navbar">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <Link to="/">
-              <FontAwesomeIcon icon={faHouse} />
+            <Link to="/" className="nav-link">
+              <FontAwesomeIcon icon={faHouse} size="3x" />
+              <div className="link-text">Home</div>
             </Link>
           </li>
-          <li>
-            <Link to="/cats">
-              <FontAwesomeIcon icon={faCat} />
+          <li className="nav-item">
+            <Link to="/cats" className="nav-link">
+              <FontAwesomeIcon icon={faCat} size="3x" />
+              <div className="link-text">Cats</div>
             </Link>
           </li>
-          <li>
-            <Link to="/dogs">
-              <FontAwesomeIcon icon={faDog} />
+          <li className="nav-item">
+            <Link to="/dogs" className="nav-link">
+              <FontAwesomeIcon icon={faDog} size="3x" />
+              <div className="link-text">Dogs</div>
             </Link>
           </li>
-          <li>
-            <Link to="/tournament">
-              <FontAwesomeIcon icon={faTrophy} />
+          <li className="nav-item">
+            <Link to="/tournament" className="nav-link">
+              <FontAwesomeIcon icon={faTrophy} size="3x" />
+              <div className="link-text">Tournament</div>
             </Link>
           </li>
         </ul>
