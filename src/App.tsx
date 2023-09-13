@@ -6,6 +6,7 @@ import { Dogs } from "./dogs/dogs";
 import { Home } from "./home";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAnglesRight,
   faCat,
   faDog,
   faHouse,
@@ -17,6 +18,12 @@ function App() {
     <div className="App">
       <nav className="navbar">
         <ul className="navbar-nav">
+          <li className="logo">
+            <Link to="/github" className="nav-link">
+              <span className="link-text logo-text">Heuuis</span>
+              <FontAwesomeIcon icon={faAnglesRight} size="3x" />
+            </Link>
+          </li>
           <li className="nav-item">
             <Link to="/" className="nav-link">
               <FontAwesomeIcon icon={faHouse} size="3x" />
@@ -49,6 +56,14 @@ function App() {
           <Route path="/cats" element={<Cats />} />
           <Route path="/dogs" element={<Dogs />} />
           <Route path="/tournament" element={<Tournament />} />
+          <Route
+            path="/github"
+            Component={() => {
+              window.location.href =
+                "https://github.com/heuuis/cats-and-dogs-app";
+              return null;
+            }}
+          />
         </Routes>
       </main>
     </div>
