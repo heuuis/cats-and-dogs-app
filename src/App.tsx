@@ -12,15 +12,21 @@ import {
   faHouse,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 function App() {
+  const openGithubInNewWindow = () => {
+    window.open("https://github.com/heuuis/cats-and-dogs-app", "_blank");
+    return null;
+  };
+
   return (
     <div className="App">
       <nav className="navbar">
         <ul className="navbar-nav">
           <li className="logo">
-            <Link to="/github" className="nav-link">
-              <span className="link-text logo-text">Heuuis</span>
+            <Link to="/" className="nav-link">
+              <span className="link-text">Heuuis</span>
               <FontAwesomeIcon icon={faAnglesRight} size="3x" />
             </Link>
           </li>
@@ -46,6 +52,12 @@ function App() {
             <Link to="/tournament" className="nav-link">
               <FontAwesomeIcon icon={faTrophy} size="3x" />
               <div className="link-text">Tournament</div>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/" className="nav-link" onClick={openGithubInNewWindow}>
+              <FontAwesomeIcon icon={faGithub} size="3x" />
+              <span className="link-text">Github</span>
             </Link>
           </li>
         </ul>
