@@ -1,4 +1,4 @@
-import "./style.css";
+import "./style.scss";
 import { Routes, Route, Link } from "react-router-dom";
 import { Tournament } from "./tournament/tournament";
 import { Cats } from "./cats/cats";

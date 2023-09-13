@@ -1,8 +1,17 @@
+$color_1: var(--text-secondary);
+$color_2: var(--bg-navbar);
+$color_3: white;
+$font-family_1: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+  "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
+$font-family_2: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  monospace;
+$background-color_1: var(--bg-navbar);
+$background-color_2: #282c34;
+
 :root {
   font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: $font-family_1;
   --text-primary: black;
   --text-secondary: white;
   --bg-primary: #c8c8c8;
@@ -10,44 +19,46 @@
   --bg-navbar: #282c34;
   --transition-speed: 600ms;
 }
-
 body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  &::-webkit-scrollbar {
+    width: 1rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: #1e1e24;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #dedede;
+  }
 }
-
-body::-webkit-scrollbar {
-  width: 1rem;
-}
-
-body::-webkit-scrollbar-track {
-  background: #1e1e24;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #dedede;
-}
-
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: $font-family_2;
 }
-
 main {
   margin-left: 6rem;
 }
-
 .navbar {
   position: fixed;
-  background-color: var(--bg-navbar);
+  background-color: $background-color_1;
   transition: width 400ms ease;
   width: 6rem;
   height: 100vh;
   overflow: scroll;
+  &:hover {
+    .logo {
+      svg {
+        transform: rotate(-180deg);
+      }
+    }
+    width: 16rem;
+    .link-text {
+      display: block;
+    }
+  }
 }
-
 .navbar-nav {
   list-style: none;
   padding: 0;
@@ -57,85 +68,63 @@ main {
   align-items: center;
   height: 100%;
 }
-
 .nav-item {
   width: 100%;
+  &:last-child {
+    margin-top: auto;
+  }
 }
-
-.nav-item:last-child {
-  margin-top: auto;
-}
-
 .nav-link {
   display: flex;
   align-items: center;
   padding: 1rem;
   height: 5rem;
-  color: var(--text-secondary);
+  color: $color_1;
   text-decoration: none;
   filter: grayscale(100%);
   transition: var(--transition-speed);
+  &:hover {
+    filter: grayscale(0%);
+    background: var(--text-secondary);
+    color: $color_2;
+  }
 }
-
-.nav-link:hover {
-  filter: grayscale(0%);
-  background: var(--text-secondary);
-  color: var(--bg-navbar);
-}
-
 .link-text {
   display: none;
   margin: 1rem;
 }
-
 .logo {
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 1rem;
   text-align: center;
-  color: var(--text-secondary);
+  color: $color_1;
   background: var(--bg-navbar);
   font-size: 1.5rem;
   letter-spacing: 0.3ch;
   width: 100%;
+  svg {
+    transform: rotate(0deg);
+    transition: transform var(--transition-speed);
+  }
 }
-
-.logo svg {
-  transform: rotate(0deg);
-  transition: transform var(--transition-speed);
-}
-
 .logo-text {
   display: inline;
   position: absolute;
   left: -999px;
   transition: var(--transition-speed);
 }
-
-.navbar:hover .logo svg {
-  transform: rotate(-180deg);
-}
-
-.navbar:hover {
-  width: 16rem;
-}
-
-.navbar:hover .link-text {
-  display: block;
-}
-
 .App {
   text-align: center;
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
-
 .App-header {
-  background-color: #282c34;
+  background-color: $background-color_2;
   min-height: 10vh;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: $color_3;
 }
