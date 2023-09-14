@@ -1,20 +1,16 @@
-$color_1: var(--text-secondary);
-$color_2: var(--bg-navbar);
-$color_3: white;
 $font-family_1: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
   "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
   sans-serif;
 $font-family_2: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
   monospace;
-$background-color_1: var(--bg-navbar);
 
 :root {
   font-size: 16px;
   font-family: $font-family_1;
-  --text-primary: black;
-  --text-secondary: white;
-  --bg-primary: #c8c8c8;
-  --bg-secondary: #b4b4b4;
+  --text-dark: black;
+  --text-light: white;
+  --bg-cats: #c8c8c8;
+  --bg-dogs: #b4b4b4;
   --bg-navbar: #282c34;
   --transition-speed: 600ms;
 }
@@ -41,7 +37,7 @@ main {
 }
 .navbar {
   position: fixed;
-  background-color: $background-color_1;
+  background-color: var(--bg-navbar);
   transition: width 400ms ease;
   width: 6rem;
   height: 100vh;
@@ -78,14 +74,12 @@ main {
   align-items: center;
   padding: 1rem;
   height: 5rem;
-  color: $color_1;
+  color: var(--text-light);
   text-decoration: none;
-  filter: grayscale(100%);
   transition: var(--transition-speed);
   &:hover {
-    filter: grayscale(0%);
-    background: var(--text-secondary);
-    color: $color_2;
+    background: var(--text-light);
+    color: var(--text-dark);
   }
 }
 .link-text {
@@ -97,7 +91,7 @@ main {
   text-transform: uppercase;
   margin-bottom: 1rem;
   text-align: center;
-  color: $color_1;
+  color: var(--text-light);
   background: var(--bg-navbar);
   font-size: 1.5rem;
   letter-spacing: 0.3ch;
@@ -120,15 +114,15 @@ main {
   height: 100vh;
 }
 .App-header {
-  background-color: $background-color_1;
+  background-color: var(--bg-navbar);
   min-height: 10vh;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: $color_3;
+  color: var(--text-light);
 }
 .Home {
-  background-color: $background-color_1;
+  background-color: var(--bg-navbar);
   font-size: 2rem;
 
   ul {
@@ -149,20 +143,27 @@ main {
       border-radius: 5rem;
       transition: var(--transition-speed);
       &:hover {
-        filter: grayscale(0%);
-        background: var(--text-secondary);
-        color: $color_2;
+        background: var(--text-light);
         border-radius: 5rem;
+        // Explicitly define hover styles for child elements (like FontAwesome icons)
+        a,
+        svg,
+        div {
+          color: var(--bg-navbar);
+          transition: var(--transition-speed);
+        }
       }
       a {
         text-decoration: none; // Optional: remove underline from link
         color: inherit; // Optional: make link text same color as regular text
         width: 100%;
         height: 100%; // Ensure link takes full height
+        color: var(--text-light);
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        transition: var(--transition-speed);
       }
     }
   }
