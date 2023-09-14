@@ -7,7 +7,6 @@ $font-family_1: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
 $font-family_2: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
   monospace;
 $background-color_1: var(--bg-navbar);
-$background-color_2: #282c34;
 
 :root {
   font-size: 16px;
@@ -121,10 +120,50 @@ main {
   height: 100vh;
 }
 .App-header {
-  background-color: $background-color_2;
+  background-color: $background-color_1;
   min-height: 10vh;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: $color_3;
+}
+.Home {
+  background-color: $background-color_1;
+  font-size: 2rem;
+
+  ul {
+    list-style-type: none; // Remove default bullet points
+    margin: 0;
+    padding: 0;
+    display: flex; // Make children appear in a row
+    justify-content: space-between; // Optional: Spaces items evenly
+    margin-top: 5rem;
+    li {
+      width: 33.33%;
+      display: flex;
+      justify-content: center; // Center horizontally
+      align-items: center; // Center vertically
+      flex-direction: column; // Stack icon and text vertically
+      text-align: center; // Center the text
+      padding: 5rem;
+      border-radius: 5rem;
+      transition: var(--transition-speed);
+      &:hover {
+        filter: grayscale(0%);
+        background: var(--text-secondary);
+        color: $color_2;
+        border-radius: 5rem;
+      }
+      a {
+        text-decoration: none; // Optional: remove underline from link
+        color: inherit; // Optional: make link text same color as regular text
+        width: 100%;
+        height: 100%; // Ensure link takes full height
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    }
+  }
 }
