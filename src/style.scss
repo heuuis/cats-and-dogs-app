@@ -155,9 +155,8 @@ main {
       }
       a {
         text-decoration: none; // Optional: remove underline from link
-        color: inherit; // Optional: make link text same color as regular text
         width: 100%;
-        height: 100%; // Ensure link takes full height
+        height: 100%;
         color: var(--text-light);
         display: flex;
         justify-content: center;
@@ -167,4 +166,16 @@ main {
       }
     }
   }
+}
+.tournament-page {
+  background-color: var(--bg-navbar);
+  color: var(--text-light);
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
 }
