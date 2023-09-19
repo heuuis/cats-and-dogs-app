@@ -5,13 +5,19 @@
 }
 
 .left-half {
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  align-items: center;
   background-color: #c8c8c8;
   height: 100%;
 }
 
 .right-half {
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  align-items: center;
   background-color: #b4b4b4;
   height: 100%;
 }
