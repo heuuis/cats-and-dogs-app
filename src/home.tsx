@@ -8,7 +8,7 @@ export const Home = () => {
       <header className="App-header">
         <h1>Cats and Dogs App!</h1>
       </header>
-      <body>
+      <div>
         <ul>
           <li>
             <Link to="/cats">
@@ -29,7 +29,7 @@ export const Home = () => {
             </Link>
           </li>
         </ul>
-      </body>
+      </div>
     </div>
   );
 };
