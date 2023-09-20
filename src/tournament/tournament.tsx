@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { ImageDisplay } from "../image-display/image-display";
 import { createDAG } from "./dag";
+import { ImageItemDisplay } from "../image-display/image-item-display";
 
 export const Tournament = () => {
   const [cats, setCats] = useState([] as Image[]);
@@ -132,10 +133,10 @@ export const Tournament = () => {
       <header className="App-header">
         <h1>Tournament of Cuteness!</h1>
       </header>
-      <body className="tournament-page">
+      <div className="tournament-page">
         {tournamentState === "end" ? (
           <div>
-            <h2>Sorted Order of Cuteness:</h2>
+            <div>Sorted Order of Cuteness:</div>
             <ul>
               {cutenessDAG
                 .getRankings()
@@ -151,7 +152,7 @@ export const Tournament = () => {
                           ? cats[parseInt(animalString.replace("cat", ""))]?.url
                           : dogs[parseInt(animalString.replace("dog", ""))]
                               ?.url;
-                      return <ImageDisplay imageUrl={imageUrl} />;
+                      return <ImageItemDisplay imageUrl={imageUrl} />;
                     })}
                   </li>
                 ))}
@@ -201,18 +202,20 @@ export const Tournament = () => {
             </div>
           )
         ) : (
-          <Button
-            className="tournament-page"
-            onClick={() => {
-              setTournamentState("playing");
-            }}
-            color="inherit"
-          >
-            <FontAwesomeIcon icon={faCrown} size="6x" />
-            <div>Begin Cute-off!</div>
-          </Button>
+          <div className="tournament-page">
+            <Button
+              className="start-tournament-btn"
+              onClick={() => {
+                setTournamentState("playing");
+              }}
+              color="inherit"
+            >
+              <FontAwesomeIcon icon={faCrown} size="6x" />
+              <div>Begin Cute-off!</div>
+            </Button>
+          </div>
         )}
-      </body>
+      </div>
     </div>
   );
 };

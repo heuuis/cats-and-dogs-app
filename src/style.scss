@@ -41,7 +41,7 @@ main {
   transition: width 400ms ease;
   width: 6rem;
   height: 100vh;
-  overflow: scroll;
+  overflow-y: auto;
   &:not(.disable-hover):hover {
     .logo {
       svg {
@@ -120,6 +120,11 @@ main {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: var(--text-light);
+  display: flex;
+
+  h1 {
+    font-size: calc(3vh + 2vmin); // Adjust this value as needed
+  }
 }
 .Home {
   background-color: var(--bg-navbar);
@@ -177,5 +182,13 @@ main {
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 100%;
+
+  ul {
+    list-style-type: none;
+
+    li {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }

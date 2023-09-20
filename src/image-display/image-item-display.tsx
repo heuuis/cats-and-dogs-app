@@ -1,20 +1,14 @@
+import { ImageDisplayProps } from "./image-display";
 import "./image-display.scss";
 
-export interface ImageDisplayProps {
-  imageUrl?: string;
-  loadingText?: string;
-  altText?: string;
-  onImageLoad?: () => void;
-}
-
-export const ImageDisplay = ({
+export const ImageItemDisplay = ({
   imageUrl = "",
   loadingText = "Loading...",
   altText = "Image",
   onImageLoad = () => {},
 }: ImageDisplayProps) => {
   return (
-    <div className="image-container">
+    <div className="image-item-container">
       {imageUrl ? (
         <img
           className="image"
