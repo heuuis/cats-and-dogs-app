@@ -1,4 +1,4 @@
-import "./image-display.css";
+import "./image-display.scss";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";

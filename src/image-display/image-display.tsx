@@ -1,4 +1,4 @@
-import "./image-display.css";
+import "./image-display.scss";
 
 interface ImageDisplayProps {
   imageUrl?: string;
