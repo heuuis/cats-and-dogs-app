@@ -57,7 +57,12 @@ function App() {
           <li className="nav-item">
             <Link
               to="/tournament"
-              onClick={() => window.location.reload()}
+              onClick={(e) => {
+                if (window.location.pathname === "/tournament") {
+                  e.preventDefault(); // Prevents the default navigation behavior
+                  window.location.reload();
+                }
+              }}
               className="nav-link"
             >
               <FontAwesomeIcon icon={faTrophy} size="3x" />
