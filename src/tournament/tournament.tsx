@@ -1,4 +1,4 @@
-import "./tournament.css";
+import "./tournament.scss";
 import { useEffect, useState } from "react";
 import { catApiKey, catApiUrl, dogApiKey, dogApiUrl } from "../values";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
@@ -137,9 +137,24 @@ export const Tournament = () => {
           <div>
             <h2>Sorted Order of Cuteness:</h2>
             <ul>
-              {cutenessDAG.getRankings().map((group, groupIdx) => (
-                <li key={groupIdx}>{group.join(", ")}</li>
-              ))}
+              {cutenessDAG
+                .getRankings()
+                .reverse()
+                .map((group, groupIdx) => (
+                  <li key={groupIdx}>
+                    {group.map((animalString) => {
+                      const animalType: "c" | "d" = animalString[0] as
+                        | "c"
+                        | "d";
+                      const imageUrl =
+                        animalType === "c"
+                          ? cats[parseInt(animalString.replace("cat", ""))]?.url
+                          : dogs[parseInt(animalString.replace("dog", ""))]
+                              ?.url;
+                      return <ImageDisplay imageUrl={imageUrl} />;
+                    })}
+                  </li>
+                ))}
             </ul>
           </div>
         ) : tournamentState === "playing" ? (
