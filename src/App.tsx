@@ -55,7 +55,11 @@ function App() {
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/tournament" className="nav-link">
+            <Link
+              to="/tournament"
+              onClick={() => window.location.reload()}
+              className="nav-link"
+            >
               <FontAwesomeIcon icon={faTrophy} size="3x" />
               <div className="link-text">Tournament</div>
             </Link>
