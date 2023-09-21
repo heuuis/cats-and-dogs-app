@@ -9,12 +9,13 @@ $font-family_2: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
   font-family: $font-family_1;
   --text-dark: black;
   --text-light: white;
+  --bg-primary: #282c34;
   --bg-cats: #c8c8c8;
   --bg-dogs: #b4b4b4;
-  --bg-navbar: #282c34;
   --transition-speed: 600ms;
 }
 body {
+  background-color: var(--bg-primary);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -37,7 +38,7 @@ main {
 }
 .navbar {
   position: fixed;
-  background-color: var(--bg-navbar);
+  background-color: var(--bg-primary);
   transition: width 400ms ease;
   width: 6rem;
   height: 100vh;
@@ -92,7 +93,7 @@ main {
   margin-bottom: 1rem;
   text-align: center;
   color: var(--text-light);
-  background: var(--bg-navbar);
+  background: var(--bg-primary);
   font-size: 1.5rem;
   letter-spacing: 0.3ch;
   width: 100%;
@@ -114,7 +115,7 @@ main {
   height: 100vh;
 }
 .App-header {
-  background-color: var(--bg-navbar);
+  background-color: var(--bg-primary);
   min-height: 10vh;
   align-items: center;
   justify-content: center;
@@ -127,7 +128,7 @@ main {
   }
 }
 .Home {
-  background-color: var(--bg-navbar);
+  background-color: var(--bg-primary);
   font-size: 2rem;
 
   ul {
@@ -154,7 +155,7 @@ main {
         a,
         svg,
         div {
-          color: var(--bg-navbar);
+          color: var(--bg-primary);
           transition: var(--transition-speed);
         }
       }
@@ -173,7 +174,7 @@ main {
   }
 }
 .tournament-page {
-  background-color: var(--bg-navbar);
+  background-color: var(--bg-primary);
   color: var(--text-light);
   font-size: 2rem;
   display: flex;
