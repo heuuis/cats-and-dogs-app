@@ -1,7 +1,5 @@
 import ReactDOM from "react-dom/client";
 import "./style.scss";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./Theme";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
@@ -11,9 +9,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <App />
   </BrowserRouter>
 );
 
