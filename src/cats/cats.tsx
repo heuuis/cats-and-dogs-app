@@ -7,9 +7,9 @@ export const Cats = () => {
       <header className="App-header">
         <h1>Cats!</h1>
       </header>
-      <body className="cats-page">
+      <div className="cats-page">
         <CatImageDisplay />
-      </body>
+      </div>
     </div>
   );
 };
