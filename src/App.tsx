@@ -15,7 +15,7 @@ function App() {
       <NavBar />
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home darkModeOn={darkModeOn} />} />
           <Route path="/cats" element={<Cats />} />
           <Route path="/dogs" element={<Dogs />} />
           <Route path="/tournament" element={<Tournament />} />

@@ -166,6 +166,7 @@ main {
           transition: var(--transition-speed);
         }
       }
+
       a {
         text-decoration: none; // Optional: remove underline from link
         width: 100%;
@@ -176,6 +177,27 @@ main {
         align-items: center;
         flex-direction: column;
         transition: var(--transition-speed);
+      }
+    }
+  }
+}
+.Home.light {
+  li {
+    background: var(--text-light);
+
+    a,
+    svg,
+    div {
+      color: var(--bg-primary);
+    }
+
+    &:hover {
+      background: var(--bg-primary);
+
+      a,
+      svg,
+      div {
+        color: var(--text-light);
       }
     }
   }
