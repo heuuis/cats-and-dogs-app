@@ -114,6 +114,14 @@ main {
   flex-direction: column;
   height: 100vh;
 }
+.App.light {
+  transition: var(--transition-speed);
+  background-color: white;
+}
+.App.dark {
+  transition: var(--transition-speed);
+  background-color: var(--bg-primary);
+}
 .App-header {
   background-color: var(--bg-primary);
   min-height: 10vh;
@@ -128,7 +136,6 @@ main {
   }
 }
 .Home {
-  background-color: var(--bg-primary);
   font-size: 2rem;
 
   ul {
