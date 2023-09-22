@@ -1,50 +1,22 @@
-// Small screens
-@media only screen and (max-width: 600px) {
-  .navbar {
-    bottom: 0;
-    width: 100vw;
-    height: 6rem;
-  }
-  .logo {
-    display: none;
-  }
-  .navbar-nav {
-    flex-direction: row;
-  }
-  .nav-link {
-    justify-content: center;
-  }
-  main {
-    margin: 0;
-  }
-}
-
-// Large screens
-@media only screen and (min-width: 600px) {
-  .navbar {
-    top: 0;
-    width: 6rem;
-    height: 100vh;
-    &:not(.disable-hover):hover {
-      .logo {
-        svg {
-          transform: rotate(-180deg);
-        }
-      }
-      width: 16rem;
-      .link-text {
-        display: block;
-      }
-    }
-  }
-}
-
 .navbar {
   position: fixed;
   background-color: var(--bg-primary);
   transition: width 400ms ease;
+  width: 6rem;
+  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
+  &:not(.disable-hover):hover {
+    .logo {
+      svg {
+        transform: rotate(-180deg);
+      }
+    }
+    width: 16rem;
+    .link-text {
+      display: block;
+    }
+  }
 }
 .navbar-nav {
   list-style: none;
