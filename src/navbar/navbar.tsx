@@ -1,3 +1,4 @@
+import "./navbar.scss";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import {
   faAnglesRight,
