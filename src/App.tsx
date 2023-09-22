@@ -5,10 +5,13 @@ import { Cats } from "./cats/cats";
 import { Dogs } from "./dogs/dogs";
 import { Home } from "./home";
 import { NavBar } from "./navbar/navbar";
+import { DarkMode } from "./dark-mode/dark-mode";
+import { useState } from "react";
 
 function App() {
+  const [darkModeOn, setDarkModeOn] = useState(true);
   return (
-    <div className="App">
+    <div className={`App ${darkModeOn ? "dark" : "light"}`}>
       <NavBar />
       <main>
         <Routes>
@@ -26,6 +29,10 @@ function App() {
           />
         </Routes>
       </main>
+      <DarkMode
+        checked={darkModeOn}
+        handleClick={() => setDarkModeOn(!darkModeOn)}
+      />
     </div>
   );
 }
