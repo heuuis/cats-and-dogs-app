@@ -2,9 +2,9 @@ import { faCat, faDog, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-export const Home = () => {
+export const Home = ({ darkModeOn }: { darkModeOn: boolean }) => {
   return (
-    <div className="App Home">
+    <div className={`App Home ${darkModeOn ? "" : "light"}`}>
       <header className="App-header">
         <h1>Cats and Dogs App!</h1>
       </header>
