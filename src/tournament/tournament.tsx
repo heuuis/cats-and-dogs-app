@@ -1,5 +1,5 @@
 import "./tournament.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { catApiKey, catApiUrl, dogApiKey, dogApiUrl } from "../values";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,16 +7,23 @@ import { Button } from "@mui/material";
 import { ImageDisplay } from "../image-display/image-display";
 import { createDAG } from "./dag";
 import { ImageItemDisplay } from "../image-display/image-item-display";
+import { TournamentResults } from "./tournament-results";
 
 export const Tournament = () => {
-  const [cats, setCats] = useState([] as Image[]);
-  const [dogs, setDogs] = useState([] as Image[]);
+  const [catContestants, setCatContestants] = useState<Contestants>({});
+  const [dogContestants, setDogContestants] = useState<Contestants>({});
+  const [currentCat, setCurrentCat] = useState("");
+  const [currentDog, setCurrentDog] = useState("");
+
   const [loading, setLoading] = useState(false);
-  const [catCounter, setCatCounter] = useState(0);
-  const [dogCounter, setDogCounter] = useState(0);
   const [imagesRendered, setImagesRendered] = useState(false);
   const [catImageRendered, setCatImageRendered] = useState(false);
   const [dogImageRendered, setDogImageRendered] = useState(false);
+
+  const resultsRef = useRef<ReturnType<typeof TournamentResults>>(
+    TournamentResults()
+  );
+
   useEffect(() => {
     setImagesRendered(catImageRendered && dogImageRendered);
   }, [catImageRendered, dogImageRendered]);
@@ -24,8 +31,6 @@ export const Tournament = () => {
   const [tournamentState, setTournamentState] = useState(
     "start" as TournamentState
   );
-
-  const [cutenessDAG, setCutenessDAG] = useState(createDAG);
 
   // Get animals on tournament start
   useEffect(() => {
@@ -39,12 +44,16 @@ export const Tournament = () => {
       getAnimals(
         `${catApiUrl}/v1/images/search?limit=5&api_key=${catApiKey}`
       ).then((images) => {
-        setCats(images);
+        const catContestants: Contestants = {};
+        images.forEach((img) => (catContestants[img.id] = img));
+        setCatContestants(catContestants);
       });
       getAnimals(
         `${dogApiUrl}/v1/images/search?limit=5&api_key=${dogApiKey}`
       ).then((images) => {
-        setDogs(images);
+        const dogContestants: Contestants = {};
+        images.forEach((img) => (dogContestants[img.id] = img));
+        setDogContestants(dogContestants);
       });
     };
     if (tournamentState === "playing") {
@@ -56,13 +65,18 @@ export const Tournament = () => {
   }, [tournamentState]);
 
   useEffect(() => {
-    const updatedDAG = { ...cutenessDAG };
-    for (let index = 0; index < 5; index++) {
-      updatedDAG.addNode(`cat${index}`);
-      updatedDAG.addNode(`dog${index}`);
+    if (
+      Object.keys(catContestants).length > 0 &&
+      Object.keys(dogContestants).length > 0
+    ) {
+      resultsRef.current = TournamentResults(
+        new Set(Object.keys(catContestants)),
+        new Set(Object.keys(dogContestants))
+      );
+      setCurrentCat(Object.keys(catContestants)[0]);
+      setCurrentDog(Object.keys(dogContestants)[0]);
     }
-    setCutenessDAG(updatedDAG);
-  }, []);
+  }, [catContestants, dogContestants]);
 
   const handleCatImageLoad = () => {
     setCatImageRendered(true);
@@ -81,51 +95,51 @@ export const Tournament = () => {
   };
 
   const handleCatWin = () => {
-    const updatedDAG = { ...cutenessDAG };
-    updatedDAG.addEdge(`cat${catCounter}`, `dog${dogCounter}`);
-    const validComparisons = updatedDAG.getValidComparisons();
+    if (!resultsRef.current) return;
+
+    resultsRef.current.addResult(
+      { type: "cat", id: currentCat },
+      { type: "dog", id: currentDog }
+    );
+    const validComparisons = resultsRef.current.getValidComparisons();
     if (validComparisons.length > 0) {
       const [newCat, newDog] =
         validComparisons[Math.floor(Math.random() * validComparisons.length)];
-      const newCatCounter = parseInt(newCat.replace("cat", ""));
-      const newDogCounter = parseInt(newDog.replace("dog", ""));
-      if (newCatCounter !== catCounter) {
+      if (newCat !== currentCat) {
         setCatImageRendered(false);
       }
-      if (newDogCounter !== dogCounter) {
+      if (newDog !== currentDog) {
         setDogImageRendered(false);
       }
-      setCatCounter(newCatCounter);
-      setDogCounter(newDogCounter);
+      setCurrentCat(newCat);
+      setCurrentDog(newDog);
     } else {
       // All comparisons have been made
       setTournamentState("end");
     }
-    setCutenessDAG(updatedDAG);
   };
 
   const handleDogWin = () => {
-    const updatedDAG = { ...cutenessDAG };
-    updatedDAG.addEdge(`dog${dogCounter}`, `cat${catCounter}`);
-    const validComparisons = updatedDAG.getValidComparisons();
+    resultsRef.current.addResult(
+      { type: "dog", id: currentDog },
+      { type: "cat", id: currentCat }
+    );
+    const validComparisons = resultsRef.current.getValidComparisons();
     if (validComparisons.length > 0) {
       const [newCat, newDog] =
         validComparisons[Math.floor(Math.random() * validComparisons.length)];
-      const newCatCounter = parseInt(newCat.replace("cat", ""));
-      const newDogCounter = parseInt(newDog.replace("dog", ""));
-      if (newCatCounter !== catCounter) {
+      if (newCat !== currentCat) {
         setCatImageRendered(false);
       }
-      if (newDogCounter !== dogCounter) {
+      if (newDog !== currentDog) {
         setDogImageRendered(false);
       }
-      setCatCounter(newCatCounter);
-      setDogCounter(newDogCounter);
+      setCurrentCat(newCat);
+      setCurrentDog(newDog);
     } else {
       // All comparisons have been made
       setTournamentState("end");
     }
-    setCutenessDAG(updatedDAG);
   };
 
   return (
@@ -138,22 +152,21 @@ export const Tournament = () => {
           <div>
             <div>Sorted Order of Cuteness:</div>
             <ul>
-              {cutenessDAG
+              {resultsRef.current
                 .getRankings()
                 .reverse()
                 .map((group, groupIdx) => (
-                  <li key={groupIdx}>
-                    {group.map((animalString) => {
-                      const animalType: "c" | "d" = animalString[0] as
-                        | "c"
-                        | "d";
-                      const imageUrl =
-                        animalType === "c"
-                          ? cats[parseInt(animalString.replace("cat", ""))]?.url
-                          : dogs[parseInt(animalString.replace("dog", ""))]
-                              ?.url;
-                      return <ImageItemDisplay imageUrl={imageUrl} />;
-                    })}
+                  <li key={group[0]}>
+                    {group.map((catOrDogId) => (
+                      <ImageItemDisplay
+                        imageUrl={
+                          (
+                            catContestants[catOrDogId] ||
+                            dogContestants[catOrDogId]
+                          ).url
+                        }
+                      />
+                    ))}
                   </li>
                 ))}
             </ul>
@@ -164,15 +177,11 @@ export const Tournament = () => {
           ) : (
             <div className="content-wrapper">
               <div className="left-half">
-                {catCounter > 0 && catCounter >= cats.length ? (
-                  <div className="image-container">That was your last cat!</div>
-                ) : (
-                  <ImageDisplay
-                    imageUrl={cats[catCounter]?.url || ""}
-                    altText={"Cat"}
-                    onImageLoad={handleCatImageLoad}
-                  />
-                )}
+                <ImageDisplay
+                  imageUrl={catContestants[currentCat]?.url || ""}
+                  altText={"Cat"}
+                  onImageLoad={handleCatImageLoad}
+                />
                 <Button
                   variant="outlined"
                   onClick={handleCatClick}
@@ -182,15 +191,11 @@ export const Tournament = () => {
                 </Button>
               </div>
               <div className="right-half">
-                {dogCounter > 0 && dogCounter >= dogs.length ? (
-                  <div className="image-container">That was your last dog!</div>
-                ) : (
-                  <ImageDisplay
-                    imageUrl={dogs[dogCounter]?.url || ""}
-                    altText={"Dog"}
-                    onImageLoad={handleDogImageLoad}
-                  />
-                )}
+                <ImageDisplay
+                  imageUrl={dogContestants[currentDog]?.url || ""}
+                  altText={"Dog"}
+                  onImageLoad={handleDogImageLoad}
+                />
                 <Button
                   variant="outlined"
                   onClick={handleDogClick}
@@ -225,6 +230,10 @@ interface Image {
   url: string;
   width: number;
   height: number;
+}
+
+interface Contestants {
+  [id: string]: Image;
 }
 
 type TournamentState = "start" | "playing" | "end";
