@@ -14,9 +14,9 @@ export const TournamentResults = (
   const { addNode, addEdge, getAllNodes, getDirectChildren, doesCauseCycle } =
     dag;
 
-  const prefixId = (type: string, id: string) => `${type}_${id}`;
-  const unprefixId = (prefixedId: string) => prefixedId.split("_")[1];
-  const getAnimalType = (prefixedId: string) => prefixedId.split("_")[0];
+  const prefixId = (type: string, id: string) => `${type} ${id}`;
+  const unprefixId = (prefixedId: string) => prefixedId.split(" ")[1];
+  const getAnimalType = (prefixedId: string) => prefixedId.split(" ")[0];
 
   const addCat = (id: string): void => {
     addNode(prefixId("cat", id));
