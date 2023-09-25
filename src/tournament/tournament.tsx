@@ -5,7 +5,6 @@ import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { ImageDisplay } from "../image-display/image-display";
-import { createDAG } from "./dag";
 import { ImageItemDisplay } from "../image-display/image-item-display";
 import { TournamentResults } from "./tournament-results";
 
@@ -15,7 +14,6 @@ export const Tournament = () => {
   const [currentCat, setCurrentCat] = useState("");
   const [currentDog, setCurrentDog] = useState("");
 
-  const [loading, setLoading] = useState(false);
   const [imagesRendered, setImagesRendered] = useState(false);
   const [catImageRendered, setCatImageRendered] = useState(false);
   const [dogImageRendered, setDogImageRendered] = useState(false);
@@ -25,6 +23,11 @@ export const Tournament = () => {
   );
 
   useEffect(() => {
+    // console.log(
+    //   `catImageRendered: ${catImageRendered}, dogImageRendered: ${dogImageRendered}, so imagesRendered: ${
+    //     catImageRendered && dogImageRendered
+    //   }`
+    // );
     setImagesRendered(catImageRendered && dogImageRendered);
   }, [catImageRendered, dogImageRendered]);
 
@@ -46,21 +49,22 @@ export const Tournament = () => {
       ).then((images) => {
         const catContestants: Contestants = {};
         images.forEach((img) => (catContestants[img.id] = img));
+        // console.log("Setting cat contestants");
         setCatContestants(catContestants);
+        // console.log(catContestants);
       });
       getAnimals(
         `${dogApiUrl}/v1/images/search?limit=5&api_key=${dogApiKey}`
       ).then((images) => {
         const dogContestants: Contestants = {};
         images.forEach((img) => (dogContestants[img.id] = img));
+        // console.log("Setting dog contestants");
         setDogContestants(dogContestants);
+        // console.log(dogContestants);
       });
     };
     if (tournamentState === "playing") {
-      setLoading(true);
-      setAnimals().then(() => {
-        setLoading(false);
-      });
+      setAnimals().then(() => {});
     }
   }, [tournamentState]);
 
@@ -74,7 +78,9 @@ export const Tournament = () => {
         new Set(Object.keys(dogContestants))
       );
       setCurrentCat(Object.keys(catContestants)[0]);
+      // console.log(currentCat);
       setCurrentDog(Object.keys(dogContestants)[0]);
+      // console.log(currentDog);
     }
   }, [catContestants, dogContestants]);
 
@@ -87,24 +93,28 @@ export const Tournament = () => {
   };
 
   const handleCatClick = () => {
-    handleCatWin();
+    handleWin("cat");
   };
 
   const handleDogClick = () => {
-    handleDogWin();
+    handleWin("dog");
   };
 
-  const handleCatWin = () => {
-    if (!resultsRef.current) return;
+  const handleWin = (winner: "cat" | "dog") => {
+    const loser = winner === "cat" ? "dog" : "cat";
 
     resultsRef.current.addResult(
-      { type: "cat", id: currentCat },
-      { type: "dog", id: currentDog }
+      { type: winner, id: winner === "cat" ? currentCat : currentDog },
+      { type: loser, id: winner === "cat" ? currentDog : currentCat }
     );
+
     const validComparisons = resultsRef.current.getValidComparisons();
     if (validComparisons.length > 0) {
       const [newCat, newDog] =
         validComparisons[Math.floor(Math.random() * validComparisons.length)];
+      // console.log(
+      //   `currentCat: ${currentCat}, newCat: ${newCat}, currentDog: ${currentDog}, newDog: ${newDog}`
+      // );
       if (newCat !== currentCat) {
         setCatImageRendered(false);
       }
@@ -119,108 +129,92 @@ export const Tournament = () => {
     }
   };
 
-  const handleDogWin = () => {
-    resultsRef.current.addResult(
-      { type: "dog", id: currentDog },
-      { type: "cat", id: currentCat }
-    );
-    const validComparisons = resultsRef.current.getValidComparisons();
-    if (validComparisons.length > 0) {
-      const [newCat, newDog] =
-        validComparisons[Math.floor(Math.random() * validComparisons.length)];
-      if (newCat !== currentCat) {
-        setCatImageRendered(false);
-      }
-      if (newDog !== currentDog) {
-        setDogImageRendered(false);
-      }
-      setCurrentCat(newCat);
-      setCurrentDog(newDog);
-    } else {
-      // All comparisons have been made
-      setTournamentState("end");
-    }
-  };
+  let pageContent;
+  switch (tournamentState) {
+    case "start":
+      pageContent = (
+        <div className="tournament-page">
+          <Button
+            className="start-tournament-btn"
+            onClick={() => {
+              setTournamentState("playing");
+            }}
+            color="inherit"
+          >
+            <FontAwesomeIcon icon={faCrown} size="6x" />
+            <div>Begin Cute-off!</div>
+          </Button>
+        </div>
+      );
+      break;
+    case "playing":
+      pageContent = (
+        <div className="content-wrapper">
+          <div className="left-half">
+            <ImageDisplay
+              imageUrl={catContestants[currentCat]?.url || ""}
+              altText={"Cat"}
+              onImageLoad={handleCatImageLoad}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleCatClick}
+              disabled={!imagesRendered}
+            >
+              Cat is cuter!
+            </Button>
+          </div>
+          <div className="right-half">
+            <ImageDisplay
+              imageUrl={dogContestants[currentDog]?.url || ""}
+              altText={"Dog"}
+              onImageLoad={handleDogImageLoad}
+            />
+            <Button
+              variant="outlined"
+              onClick={handleDogClick}
+              disabled={!imagesRendered}
+            >
+              Dog is cuter!
+            </Button>
+          </div>
+        </div>
+      );
+      break;
+    case "end":
+      pageContent = (
+        <div>
+          <div>Sorted Order of Cuteness:</div>
+          <ul>
+            {resultsRef.current
+              .getRankings()
+              .reverse()
+              .map((group) => (
+                <li key={group[0]}>
+                  {group.map((catOrDogId) => (
+                    <ImageItemDisplay
+                      imageUrl={
+                        (
+                          catContestants[catOrDogId] ||
+                          dogContestants[catOrDogId]
+                        ).url
+                      }
+                    />
+                  ))}
+                </li>
+              ))}
+          </ul>
+        </div>
+      );
+      break;
+  }
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Tournament of Cuteness!</h1>
       </header>
-      <div className="tournament-page">
-        {tournamentState === "end" ? (
-          <div>
-            <div>Sorted Order of Cuteness:</div>
-            <ul>
-              {resultsRef.current
-                .getRankings()
-                .reverse()
-                .map((group, groupIdx) => (
-                  <li key={group[0]}>
-                    {group.map((catOrDogId) => (
-                      <ImageItemDisplay
-                        imageUrl={
-                          (
-                            catContestants[catOrDogId] ||
-                            dogContestants[catOrDogId]
-                          ).url
-                        }
-                      />
-                    ))}
-                  </li>
-                ))}
-            </ul>
-          </div>
-        ) : tournamentState === "playing" ? (
-          loading ? (
-            <div>Starting the tournament, get ready...</div>
-          ) : (
-            <div className="content-wrapper">
-              <div className="left-half">
-                <ImageDisplay
-                  imageUrl={catContestants[currentCat]?.url || ""}
-                  altText={"Cat"}
-                  onImageLoad={handleCatImageLoad}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={handleCatClick}
-                  disabled={!imagesRendered}
-                >
-                  Cat is cuter!
-                </Button>
-              </div>
-              <div className="right-half">
-                <ImageDisplay
-                  imageUrl={dogContestants[currentDog]?.url || ""}
-                  altText={"Dog"}
-                  onImageLoad={handleDogImageLoad}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={handleDogClick}
-                  disabled={!imagesRendered}
-                >
-                  Dog is cuter!
-                </Button>
-              </div>
-            </div>
-          )
-        ) : (
-          <div className="tournament-page">
-            <Button
-              className="start-tournament-btn"
-              onClick={() => {
-                setTournamentState("playing");
-              }}
-              color="inherit"
-            >
-              <FontAwesomeIcon icon={faCrown} size="6x" />
-              <div>Begin Cute-off!</div>
-            </Button>
-          </div>
-        )}
-      </div>
+      <div className="tournament-page">{pageContent}</div>
     </div>
   );
 };
