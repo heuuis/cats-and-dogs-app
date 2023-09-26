@@ -96,12 +96,14 @@ export const Tournament = () => {
     handleWin("dog");
   };
 
-  const handleWin = (winner: "cat" | "dog") => {
-    const loser = winner === "cat" ? "dog" : "cat";
+  const handleWin = (winningAnimal: "cat" | "dog") => {
+    const losingAnimal = winningAnimal === "cat" ? "dog" : "cat";
+    const winner = winningAnimal === "cat" ? currentCat : currentDog;
+    const loser = losingAnimal === "cat" ? currentCat : currentDog;
 
     resultsRef.current.addResult(
-      { type: winner, id: winner === "cat" ? currentCat : currentDog },
-      { type: loser, id: winner === "cat" ? currentDog : currentCat }
+      { type: winningAnimal, id: winner },
+      { type: losingAnimal, id: loser }
     );
 
     const validComparisons = resultsRef.current.getValidComparisons();
