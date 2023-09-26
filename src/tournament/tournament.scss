@@ -9,7 +9,6 @@
     flex: 1;
     flex-direction: column;
     align-items: center;
-    height: 100%;
   }
 
   .left-half {
@@ -23,4 +22,39 @@
 
 .start-tournament-btn {
   flex-direction: column;
+}
+
+.contestant-btn {
+  background: none; // Remove the default background
+  border: none; // Remove the default border
+  padding: 0; // Remove padding
+  cursor: pointer;
+  outline: none; // Optionally remove the focus outline
+
+  &:disabled {
+    cursor: not-allowed; // Change cursor on disabled state
+
+    .image {
+      opacity: 0.6; // Decrease opacity for disabled state
+      filter: grayscale(100%); // Turn image to grayscale on disabled
+    }
+  }
+
+  &:hover {
+    .image {
+      transform: scale(1.1); // Enlarge image on hover
+    }
+  }
+}
+
+.cuteness-list {
+  flex-direction: column;
+  width: 100%;
+  ul {
+    list-style-type: none;
+    li {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }

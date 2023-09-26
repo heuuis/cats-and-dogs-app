@@ -44,14 +44,14 @@ export const Tournament = () => {
       return await response.json();
     };
     const setAnimals: () => Promise<void> = async () => {
-      getAnimals(`${catApiUrl}/v1/images/search?limit=5`).then((images) => {
+      getAnimals(`${catApiUrl}/v1/images/search?limit=10`).then((images) => {
         const catContestants: Contestants = {};
         images.forEach((img) => (catContestants[img.id] = img));
         // console.log("Setting cat contestants");
         setCatContestants(catContestants);
         // console.log(catContestants);
       });
-      getAnimals(`${dogApiUrl}/v1/images/search?limit=5`).then((images) => {
+      getAnimals(`${dogApiUrl}/v1/images/search?limit=10`).then((images) => {
         const dogContestants: Contestants = {};
         images.forEach((img) => (dogContestants[img.id] = img));
         // console.log("Setting dog contestants");
@@ -131,64 +131,60 @@ export const Tournament = () => {
   switch (tournamentState) {
     case "start":
       pageContent = (
-        <div className="tournament-page">
-          <Button
-            className="start-tournament-btn"
-            onClick={() => {
-              setTournamentState("playing");
-            }}
-            color="inherit"
-          >
-            <FontAwesomeIcon icon={faCrown} size="6x" />
-            <div>Begin Cute-off!</div>
-          </Button>
-        </div>
+        <Button
+          className="start-tournament-btn"
+          onClick={() => {
+            setTournamentState("playing");
+          }}
+          color="inherit"
+        >
+          <FontAwesomeIcon icon={faCrown} size="6x" />
+          <div>Begin Cute-off!</div>
+        </Button>
       );
       break;
     case "playing":
       pageContent = (
         <div className="content-wrapper">
           <div className="left-half">
-            <ImageDisplay
-              imageUrl={catContestants[currentCat]?.url || ""}
-              altText={"Cat"}
-              onImageLoad={handleCatImageLoad}
-            />
-            <Button
-              variant="outlined"
+            <button
+              className="contestant-btn"
               onClick={handleCatClick}
               disabled={!imagesRendered}
             >
-              Cat is cuter!
-            </Button>
+              <ImageDisplay
+                imageUrl={catContestants[currentCat]?.url || ""}
+                altText={"Cat"}
+                onImageLoad={handleCatImageLoad}
+              />
+            </button>
           </div>
           <div className="right-half">
-            <ImageDisplay
-              imageUrl={dogContestants[currentDog]?.url || ""}
-              altText={"Dog"}
-              onImageLoad={handleDogImageLoad}
-            />
-            <Button
-              variant="outlined"
+            <button
+              className="contestant-btn"
               onClick={handleDogClick}
               disabled={!imagesRendered}
             >
-              Dog is cuter!
-            </Button>
+              <ImageDisplay
+                imageUrl={dogContestants[currentDog]?.url || ""}
+                altText={"Dog"}
+                onImageLoad={handleDogImageLoad}
+              />
+            </button>
           </div>
         </div>
       );
       break;
     case "end":
       pageContent = (
-        <div>
+        <div className="cuteness-list">
           <div>Sorted Order of Cuteness:</div>
           <ul>
             {resultsRef.current
               .getRankings()
               .reverse()
-              .map((group) => (
-                <li key={group[0]}>
+              .map((group, groupIdx) => (
+                <li key={groupIdx}>
                   {group.map((catOrDogId) => (
                     <ImageItemDisplay
                       imageUrl={
