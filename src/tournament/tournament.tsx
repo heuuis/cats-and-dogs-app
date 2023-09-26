@@ -1,6 +1,6 @@
 import "./tournament.scss";
 import { useEffect, useRef, useState } from "react";
-import { catApiKey, catApiUrl, dogApiKey, dogApiUrl } from "../values";
+import { catApiUrl, dogApiUrl } from "../values";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
@@ -44,18 +44,14 @@ export const Tournament = () => {
       return await response.json();
     };
     const setAnimals: () => Promise<void> = async () => {
-      getAnimals(
-        `${catApiUrl}/v1/images/search?limit=5&api_key=${catApiKey}`
-      ).then((images) => {
+      getAnimals(`${catApiUrl}/v1/images/search?limit=5`).then((images) => {
         const catContestants: Contestants = {};
         images.forEach((img) => (catContestants[img.id] = img));
         // console.log("Setting cat contestants");
         setCatContestants(catContestants);
         // console.log(catContestants);
       });
-      getAnimals(
-        `${dogApiUrl}/v1/images/search?limit=5&api_key=${dogApiKey}`
-      ).then((images) => {
+      getAnimals(`${dogApiUrl}/v1/images/search?limit=5`).then((images) => {
         const dogContestants: Contestants = {};
         images.forEach((img) => (dogContestants[img.id] = img));
         // console.log("Setting dog contestants");
