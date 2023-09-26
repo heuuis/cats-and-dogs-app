@@ -43,22 +43,24 @@ export const Tournament = () => {
       const response = await fetch(queryString);
       return await response.json();
     };
-    const setAnimals: () => Promise<void> = async () => {
-      getAnimals(`${catApiUrl}/v1/images/search?limit=10`).then((images) => {
-        const catContestants: Contestants = {};
-        images.forEach((img) => (catContestants[img.id] = img));
-        // console.log("Setting cat contestants");
-        setCatContestants(catContestants);
-        // console.log(catContestants);
-      });
-      getAnimals(`${dogApiUrl}/v1/images/search?limit=10`).then((images) => {
-        const dogContestants: Contestants = {};
-        images.forEach((img) => (dogContestants[img.id] = img));
-        // console.log("Setting dog contestants");
-        setDogContestants(dogContestants);
-        // console.log(dogContestants);
-      });
+
+    const setAnimalContestants = async (
+      apiUrl: string,
+      setContestantFunc: Function
+    ) => {
+      const images = await getAnimals(`${apiUrl}/v1/images/search?limit=10`);
+      const contestants: Contestants = {};
+      images.forEach((img) => (contestants[img.id] = img));
+      setContestantFunc(contestants);
     };
+
+    const setAnimals: () => Promise<void> = async () => {
+      await Promise.all([
+        setAnimalContestants(catApiUrl, setCatContestants),
+        setAnimalContestants(dogApiUrl, setDogContestants),
+      ]);
+    };
+
     if (tournamentState === "playing") {
       setAnimals().then(() => {});
     }
