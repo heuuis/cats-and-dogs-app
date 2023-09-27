@@ -25,52 +25,58 @@ export const Tournament = () => {
     "start" as TournamentState
   );
 
-  // Get animals on tournament start
+  // Initialise animals
   useEffect(() => {
+    let isMounted = true;
     const getAnimals: (queryString: string) => Promise<Image[]> = async (
       queryString
     ) => {
-      const response = await fetch(queryString);
-      return await response.json();
+      try {
+        const response = await fetch(queryString);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
     };
 
-    const setAnimalContestants = async (
-      apiUrl: string,
-      setContestantFunc: Function
-    ) => {
+    const getAnimalContestants = async (apiUrl: string) => {
       const images = await getAnimals(`${apiUrl}/v1/images/search?limit=10`);
       const contestants: Contestants = {};
       images.forEach((img) => (contestants[img.id] = img));
-      setContestantFunc(contestants);
+      return contestants;
     };
 
-    const setAnimals: () => Promise<void> = async () => {
-      await Promise.all([
-        setAnimalContestants(catApiUrl, setCatContestants),
-        setAnimalContestants(dogApiUrl, setDogContestants),
+    const getContestants: () => Promise<{
+      cats: Contestants;
+      dogs: Contestants;
+    }> = async () => {
+      const [cats, dogs] = await Promise.all([
+        getAnimalContestants(catApiUrl),
+        getAnimalContestants(dogApiUrl),
       ]);
+      return { cats, dogs };
     };
 
-    if (tournamentState === "playing") {
-      setAnimals().then(() => {});
-    }
-  }, [tournamentState]);
+    getContestants().then(({ cats, dogs }) => {
+      if (isMounted) {
+        setCatContestants(cats);
+        setDogContestants(dogs);
+        setCurrentCat(Object.keys(cats)[0]);
+        setCurrentDog(Object.keys(dogs)[0]);
+        resultsRef.current = TournamentResults(
+          new Set(Object.keys(cats)),
+          new Set(Object.keys(dogs))
+        );
+      }
+    });
 
-  useEffect(() => {
-    if (
-      Object.keys(catContestants).length > 0 &&
-      Object.keys(dogContestants).length > 0
-    ) {
-      resultsRef.current = TournamentResults(
-        new Set(Object.keys(catContestants)),
-        new Set(Object.keys(dogContestants))
-      );
-      setCurrentCat(Object.keys(catContestants)[0]);
-      // console.log(currentCat);
-      setCurrentDog(Object.keys(dogContestants)[0]);
-      // console.log(currentDog);
-    }
-  }, [catContestants, dogContestants]);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleCatImageLoad = () => {
     setCatImageRendered(true);
