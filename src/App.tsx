@@ -9,13 +9,12 @@ import { DarkMode } from "./dark-mode/dark-mode";
 import { useState } from "react";
 
 function App() {
-  const [darkModeOn, setDarkModeOn] = useState(true);
   return (
-    <div className={`App ${darkModeOn ? "dark" : "light"}`}>
+    <>
       <NavBar />
       <main>
         <Routes>
-          <Route path="/" element={<Home darkModeOn={darkModeOn} />} />
+          <Route path="/" element={<Home />} />
           <Route path="/cats" element={<Cats />} />
           <Route path="/dogs" element={<Dogs />} />
           <Route path="/tournament" element={<Tournament />} />
@@ -29,11 +28,7 @@ function App() {
           />
         </Routes>
       </main>
-      <DarkMode
-        checked={darkModeOn}
-        handleClick={() => setDarkModeOn(!darkModeOn)}
-      />
-    </div>
+    </>
   );
 }
 

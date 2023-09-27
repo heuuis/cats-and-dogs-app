@@ -1,15 +1,13 @@
 import "./cats.css";
 import { CatImageDisplay } from "../image-display/cat-image-display";
+import { Layout } from "../layout";
 
 export const Cats = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Cats!</h1>
-      </header>
+    <Layout title="Cats!">
       <div className="cats-page">
         <CatImageDisplay />
       </div>
-    </div>
+    </Layout>
   );
 };

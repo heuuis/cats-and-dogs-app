@@ -1,15 +1,13 @@
 import "./dogs.css";
 import { DogImageDisplay } from "../image-display/dog-image-display";
+import { Layout } from "../layout";
 
 export const Dogs = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Dogs!</h1>
-      </header>
+    <Layout title="Dogs!">
       <div className="dogs-page">
         <DogImageDisplay />
       </div>
-    </div>
+    </Layout>
   );
 };

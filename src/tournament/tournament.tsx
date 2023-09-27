@@ -11,6 +11,7 @@ import { TournamentResults } from "./tournament-results";
 import { TournamentMenu } from "./tournament-menu";
 import { Leaderboard } from "./leaderboard";
 import { CutenessContest } from "./cuteness-contest";
+import { Layout } from "../layout";
 
 export const Tournament = () => {
   const [catContestants, setCatContestants] = useState<Contestants>({});
@@ -139,11 +140,8 @@ export const Tournament = () => {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Tournament of Cuteness!</h1>
-      </header>
+    <Layout title="Tournament of Cuteness!">
       <div className="tournament-page">{pageContent}</div>
-    </div>
+    </Layout>
   );
 };
