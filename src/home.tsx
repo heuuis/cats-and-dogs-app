@@ -6,7 +6,7 @@ import { Layout } from "./layout";
 export const Home = () => {
   return (
     <Layout title="Cats and Dogs App!">
-      <div className={`Home`}>
+      <div className="Home">
         <div>
           <ul>
             <li>

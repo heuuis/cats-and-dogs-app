@@ -27,22 +27,22 @@ export const Tournament = () => {
     "start" as TournamentState
   );
 
-  const getAnimals: (queryString: string) => Promise<Image[]> = async (
-    queryString
+  const getAnimalImages: (apiUrl: string) => Promise<Image[]> = async (
+    apiUrl
   ) => {
     try {
-      const response = await fetch(queryString);
+      const response = await fetch(`${apiUrl}/v1/images/search?limit=10`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       return await response.json();
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+      return [];
     }
   };
 
-  const getAnimalContestants = async (apiUrl: string) => {
-    const images = await getAnimals(`${apiUrl}/v1/images/search?limit=10`);
+  const createContestants = (images: Image[]) => {
     const contestants: Contestants = {};
     images.forEach((img) => (contestants[img.id] = img));
     return contestants;
@@ -52,11 +52,14 @@ export const Tournament = () => {
     cats: Contestants;
     dogs: Contestants;
   }> = async () => {
-    const [cats, dogs] = await Promise.all([
-      getAnimalContestants(catApiUrl),
-      getAnimalContestants(dogApiUrl),
+    const [catImages, dogImages] = await Promise.all([
+      getAnimalImages(catApiUrl),
+      getAnimalImages(dogApiUrl),
     ]);
-    return { cats, dogs };
+    return {
+      cats: createContestants(catImages),
+      dogs: createContestants(dogImages),
+    };
   };
 
   // Initialise animals
