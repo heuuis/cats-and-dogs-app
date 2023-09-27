@@ -1,3 +1,4 @@
+import "./tournament.scss";
 import { Image } from "./interfaces";
 import { ImageItemDisplay } from "../image-display/image-item-display";
 
