@@ -14,22 +14,12 @@ export const Tournament = () => {
   const [currentCat, setCurrentCat] = useState("");
   const [currentDog, setCurrentDog] = useState("");
 
-  const [imagesRendered, setImagesRendered] = useState(false);
   const [catImageRendered, setCatImageRendered] = useState(false);
   const [dogImageRendered, setDogImageRendered] = useState(false);
 
   const resultsRef = useRef<ReturnType<typeof TournamentResults>>(
     TournamentResults()
   );
-
-  useEffect(() => {
-    // console.log(
-    //   `catImageRendered: ${catImageRendered}, dogImageRendered: ${dogImageRendered}, so imagesRendered: ${
-    //     catImageRendered && dogImageRendered
-    //   }`
-    // );
-    setImagesRendered(catImageRendered && dogImageRendered);
-  }, [catImageRendered, dogImageRendered]);
 
   const [tournamentState, setTournamentState] = useState(
     "start" as TournamentState
@@ -152,7 +142,7 @@ export const Tournament = () => {
             <button
               className="contestant-btn"
               onClick={handleCatClick}
-              disabled={!imagesRendered}
+              disabled={!(catImageRendered && dogImageRendered)}
             >
               <ImageDisplay
                 imageUrl={catContestants[currentCat]?.url || ""}
@@ -165,7 +155,7 @@ export const Tournament = () => {
             <button
               className="contestant-btn"
               onClick={handleDogClick}
-              disabled={!imagesRendered}
+              disabled={!(catImageRendered && dogImageRendered)}
             >
               <ImageDisplay
                 imageUrl={dogContestants[currentDog]?.url || ""}
