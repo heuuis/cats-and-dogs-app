@@ -47,14 +47,31 @@
   }
 }
 
-.cuteness-list {
+.cuteness-leaderboard {
+  display: flex;
   flex-direction: column;
-  width: 100%;
-  ul {
-    list-style-type: none;
-    li {
+  align-items: center;
+  list-style-type: none; // Removes the default bullet points of the list
+  padding: 0; // Removes the default padding of the list
+  height: auto;
+
+  > li {
+    // Direct child list items
+    height: 10%;
+    margin: 10px 0; // Adds some vertical spacing between the groups
+
+    .equally-cute {
       display: flex;
+      flex-direction: row;
+      align-items: center;
       justify-content: center;
+      list-style-type: none; // Removes the default bullet points of the inner list
+      padding: 0; // Removes the default padding of the inner list
+
+      > li {
+        // Direct child list items of the inner list
+        margin: 0 10px; // Adds some horizontal spacing between the images
+      }
     }
   }
 }

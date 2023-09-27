@@ -4,17 +4,21 @@ import { ImageItemDisplay } from "../image-display/image-item-display";
 
 export const Leaderboard = ({ rankings }: { rankings: Image[][] }) => {
   return (
-    <div className="cuteness-list">
+    <>
       <div>Sorted Order of Cuteness:</div>
-      <ul>
-        {rankings.map((group, groupIdx) => (
-          <li key={groupIdx}>
-            {group.map((image) => (
-              <ImageItemDisplay imageUrl={image.url} />
-            ))}
+      <ul className="cuteness-leaderboard">
+        {rankings.map((group, ranking) => (
+          <li key={ranking}>
+            <ul className="equally-cute">
+              {group.map((image) => (
+                <li key={image.id}>
+                  <ImageItemDisplay imageUrl={image.url} />
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
-    </div>
+    </>
   );
 };

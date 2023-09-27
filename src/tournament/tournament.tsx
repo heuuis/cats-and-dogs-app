@@ -7,19 +7,16 @@ import {
   TournamentState,
   Image,
 } from "./interfaces";
-import { ImageDisplay } from "../image-display/image-display";
 import { TournamentResults } from "./tournament-results";
 import { TournamentMenu } from "./tournament-menu";
 import { Leaderboard } from "./leaderboard";
+import { CutenessContest } from "./cuteness-contest";
 
 export const Tournament = () => {
   const [catContestants, setCatContestants] = useState<Contestants>({});
   const [dogContestants, setDogContestants] = useState<Contestants>({});
   const [currentCat, setCurrentCat] = useState("");
   const [currentDog, setCurrentDog] = useState("");
-
-  const [catImageRendered, setCatImageRendered] = useState(false);
-  const [dogImageRendered, setDogImageRendered] = useState(false);
 
   const resultsRef = useRef<ReturnType<typeof TournamentResults>>(
     TournamentResults()
@@ -84,22 +81,6 @@ export const Tournament = () => {
     };
   }, []);
 
-  const handleCatImageLoad = () => {
-    setCatImageRendered(true);
-  };
-
-  const handleDogImageLoad = () => {
-    setDogImageRendered(true);
-  };
-
-  const handleCatClick = () => {
-    handleWin("cat");
-  };
-
-  const handleDogClick = () => {
-    handleWin("dog");
-  };
-
   const handleWin = (winningAnimal: ContestantCategory) => {
     const losingAnimal = winningAnimal === "cat" ? "dog" : "cat";
     const winner = winningAnimal === "cat" ? currentCat : currentDog;
@@ -117,12 +98,6 @@ export const Tournament = () => {
       // console.log(
       //   `currentCat: ${currentCat}, newCat: ${newCat}, currentDog: ${currentDog}, newDog: ${newDog}`
       // );
-      if (newCat !== currentCat) {
-        setCatImageRendered(false);
-      }
-      if (newDog !== currentDog) {
-        setDogImageRendered(false);
-      }
       setCurrentCat(newCat);
       setCurrentDog(newDog);
     } else {
@@ -142,37 +117,11 @@ export const Tournament = () => {
       break;
     case "playing":
       pageContent = (
-        <>
-          <div className="content-wrapper">
-            <div className="left-half">
-              <button
-                className="contestant-btn"
-                onClick={handleCatClick}
-                disabled={!(catImageRendered && dogImageRendered)}
-              >
-                <ImageDisplay
-                  imageUrl={catContestants[currentCat]?.url || ""}
-                  altText={"Cat"}
-                  onImageLoad={handleCatImageLoad}
-                />
-              </button>
-            </div>
-            <div className="right-half">
-              <button
-                className="contestant-btn"
-                onClick={handleDogClick}
-                disabled={!(catImageRendered && dogImageRendered)}
-              >
-                <ImageDisplay
-                  imageUrl={dogContestants[currentDog]?.url || ""}
-                  altText={"Dog"}
-                  onImageLoad={handleDogImageLoad}
-                />
-              </button>
-            </div>
-          </div>
-          <h2>Which animal is cuter?...</h2>
-        </>
+        <CutenessContest
+          cat={catContestants[currentCat]}
+          dog={dogContestants[currentDog]}
+          onWinnerSelected={handleWin}
+        />
       );
       break;
     case "end":
