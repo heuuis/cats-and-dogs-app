@@ -1,7 +1,8 @@
 import "./tournament.scss";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { ContestantCategory, Image } from "./interfaces";
 import { ImageDisplay } from "../image-display/image-display";
+import { useHover } from "../hooks/useHover";
 
 interface CutenessContestProps {
   cat: Image;
@@ -11,6 +12,14 @@ interface CutenessContestProps {
 
 export const CutenessContest = (props: CutenessContestProps) => {
   const { cat, dog, onWinnerSelected } = props;
+  const [catRef, catHovering] = useHover() as [
+    RefObject<HTMLButtonElement>,
+    boolean
+  ];
+  const [dogRef, dogHovering] = useHover() as [
+    RefObject<HTMLButtonElement>,
+    boolean
+  ];
 
   const [catImageRendered, setCatImageRendered] = useState(false);
   const [dogImageRendered, setDogImageRendered] = useState(false);
@@ -21,6 +30,7 @@ export const CutenessContest = (props: CutenessContestProps) => {
         <div className="left-half">
           <button
             className="contestant-btn"
+            ref={catRef}
             onClick={() => onWinnerSelected("cat")}
             disabled={!(catImageRendered && dogImageRendered)}
           >
@@ -34,6 +44,7 @@ export const CutenessContest = (props: CutenessContestProps) => {
         <div className="right-half">
           <button
             className="contestant-btn"
+            ref={dogRef}
             onClick={() => onWinnerSelected("dog")}
             disabled={!(catImageRendered && dogImageRendered)}
           >
@@ -46,6 +57,10 @@ export const CutenessContest = (props: CutenessContestProps) => {
         </div>
       </div>
       <h2>Which animal is cuter?...</h2>
+      <h3>
+        {catHovering && "The cat!"}
+        {dogHovering && "The dog!"}
+      </h3>
     </>
   );
 };
