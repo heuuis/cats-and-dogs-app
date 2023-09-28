@@ -14,6 +14,7 @@ import { CutenessContest } from "./cuteness-contest";
 import { Layout } from "../layout";
 
 export const Tournament = () => {
+  const [numberOfContestants, setNumberOfContestants] = useState(4);
   const [catContestants, setCatContestants] = useState<Contestants>({});
   const [dogContestants, setDogContestants] = useState<Contestants>({});
   const [currentCat, setCurrentCat] = useState("");
@@ -48,7 +49,7 @@ export const Tournament = () => {
     return contestants;
   };
 
-  const getContestants: () => Promise<{
+  const getContestants: (n: number) => Promise<{
     cats: Contestants;
     dogs: Contestants;
   }> = async () => {
@@ -57,17 +58,21 @@ export const Tournament = () => {
       getAnimalImages(dogApiUrl),
     ]);
     return {
-      cats: createContestants(catImages),
-      dogs: createContestants(dogImages),
+      cats: createContestants(catImages.slice(0, numberOfContestants)),
+      dogs: createContestants(dogImages.slice(0, numberOfContestants)),
     };
   };
 
   // Initialise animals
   useEffect(() => {
+    if (tournamentState !== "playing") {
+      return;
+    }
+
     let isMounted = true;
 
     console.log("Getting new contestants");
-    getContestants().then(({ cats, dogs }) => {
+    getContestants(numberOfContestants).then(({ cats, dogs }) => {
       if (isMounted) {
         setCatContestants(cats);
         setDogContestants(dogs);
@@ -83,7 +88,7 @@ export const Tournament = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [tournamentState, numberOfContestants]);
 
   const handleWin = (winningAnimal: ContestantCategory) => {
     const losingAnimal = winningAnimal === "cat" ? "dog" : "cat";
@@ -115,6 +120,8 @@ export const Tournament = () => {
     case "start":
       pageContent = (
         <TournamentMenu
+          numContestants={numberOfContestants}
+          onChangeNumContestants={(n) => setNumberOfContestants(n)}
           onStartTournament={() => setTournamentState("playing")}
         />
       );
@@ -122,8 +129,8 @@ export const Tournament = () => {
     case "playing":
       pageContent = (
         <CutenessContest
-          cat={catContestants[currentCat]}
-          dog={dogContestants[currentDog]}
+          cat={catContestants[currentCat] || ""}
+          dog={dogContestants[currentDog] || ""}
           onWinnerSelected={handleWin}
         />
       );

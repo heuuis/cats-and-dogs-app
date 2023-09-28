@@ -19,7 +19,19 @@
     background-color: #b4b4b4;
   }
 }
-
+.tournament-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.number-input {
+  background: none;
+  font-size: 2.5rem;
+  border: none;
+  outline: none;
+  color: var(--text-light);
+  text-align: center;
+}
 .start-tournament-btn {
   flex-direction: column;
 }

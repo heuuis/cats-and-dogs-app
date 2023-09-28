@@ -58,8 +58,8 @@ export const CutenessContest = (props: CutenessContestProps) => {
       </div>
       <h2>Which animal is cuter?...</h2>
       <h3>
-        {catHovering && "The cat!"}
-        {dogHovering && "The dog!"}
+        {catImageRendered && dogImageRendered && catHovering && "The cat!"}
+        {catImageRendered && dogImageRendered && dogHovering && "The dog!"}
       </h3>
     </>
   );
