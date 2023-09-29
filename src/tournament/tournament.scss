@@ -32,8 +32,14 @@
   color: var(--text-light);
   text-align: center;
 }
-.start-tournament-btn {
+
+.num-contestants-container {
+  margin: 2rem;
+}
+
+#start-tournament {
   flex-direction: column;
+  margin: 2rem;
 }
 
 .contestant-btn {

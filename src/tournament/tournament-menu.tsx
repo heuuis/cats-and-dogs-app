@@ -18,26 +18,29 @@ export const TournamentMenu = ({
   };
   return (
     <div className="tournament-menu">
-      <br />
-      <label htmlFor="num-contestants-input">Number of contestants:</label>
-      <input
-        type="number"
-        id="num-contestants-input"
-        name="num-contestants-input"
-        className="number-input"
-        min="1"
-        max="10"
-        value={numContestants}
-        onChange={handleChange}
-      />
-      <br />
+      <div className="num-contestants-container">
+        <label htmlFor="num-contestants-input">Number of contestants:</label>
+        <input
+          type="number"
+          id="num-contestants-input"
+          name="num-contestants-input"
+          className="number-input"
+          min="1"
+          max="10"
+          value={numContestants}
+          onChange={handleChange}
+        />
+      </div>
+
       <Button
+        id="start-tournament"
+        name="start-tournament"
         className="start-tournament-btn"
         onClick={() => onStartTournament()}
         color="inherit"
       >
         <FontAwesomeIcon icon={faCrown} size="8x" />
-        <p>Begin Cute-off!</p>
+        <label htmlFor="start-tournament">Begin Cute-off!</label>
       </Button>
     </div>
   );
