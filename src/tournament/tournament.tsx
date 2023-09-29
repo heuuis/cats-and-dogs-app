@@ -88,7 +88,7 @@ export const Tournament = () => {
     return () => {
       isMounted = false;
     };
-  }, [tournamentState, numberOfContestants]);
+  }, [tournamentState, numberOfContestants, getContestants]);
 
   const handleWin = (winningAnimal: ContestantCategory) => {
     const losingAnimal = winningAnimal === "cat" ? "dog" : "cat";
