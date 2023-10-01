@@ -88,7 +88,7 @@ export const Tournament = () => {
     return () => {
       isMounted = false;
     };
-  }, [tournamentState, numberOfContestants, getContestants]);
+  }, [tournamentState, numberOfContestants]);
 
   const handleWin = (winningAnimal: ContestantCategory) => {
     const losingAnimal = winningAnimal === "cat" ? "dog" : "cat";
@@ -128,11 +128,21 @@ export const Tournament = () => {
       break;
     case "playing":
       pageContent = (
-        <CutenessContest
-          cat={catContestants[currentCat] || ""}
-          dog={dogContestants[currentDog] || ""}
-          onWinnerSelected={handleWin}
-        />
+        <>
+          <progress
+            id="tournament-progress"
+            value={
+              numberOfContestants * numberOfContestants -
+              resultsRef.current.getValidComparisons().length
+            }
+            max={numberOfContestants * numberOfContestants}
+          />
+          <CutenessContest
+            cat={catContestants[currentCat] || ""}
+            dog={dogContestants[currentDog] || ""}
+            onWinnerSelected={handleWin}
+          />
+        </>
       );
       break;
     case "end":
