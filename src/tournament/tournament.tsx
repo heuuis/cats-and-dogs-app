@@ -29,41 +29,6 @@ export const Tournament = () => {
     "start" as TournamentState
   );
 
-  const getAnimalImages: (apiUrl: string) => Promise<Image[]> = async (
-    apiUrl
-  ) => {
-    try {
-      const response = await fetch(`${apiUrl}/v1/images/search?limit=10`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-      return [];
-    }
-  };
-
-  const createContestants = (images: Image[]) => {
-    const contestants: Contestants = {};
-    images.forEach((img) => (contestants[img.id] = img));
-    return contestants;
-  };
-
-  const getContestants: (n: number) => Promise<{
-    cats: Contestants;
-    dogs: Contestants;
-  }> = async () => {
-    const [catImages, dogImages] = await Promise.all([
-      getAnimalImages(catApiUrl),
-      getAnimalImages(dogApiUrl),
-    ]);
-    return {
-      cats: createContestants(catImages.slice(0, numberOfContestants)),
-      dogs: createContestants(dogImages.slice(0, numberOfContestants)),
-    };
-  };
-
   // Initialise animals
   useEffect(() => {
     if (tournamentState !== "playing") {
@@ -179,4 +144,39 @@ export const Tournament = () => {
       <div className="tournament-page">{pageContent}</div>
     </Layout>
   );
+};
+
+const getAnimalImages: (apiUrl: string) => Promise<Image[]> = async (
+  apiUrl
+) => {
+  try {
+    const response = await fetch(`${apiUrl}/v1/images/search?limit=10`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+    return [];
+  }
+};
+
+const createContestants = (images: Image[]) => {
+  const contestants: Contestants = {};
+  images.forEach((img) => (contestants[img.id] = img));
+  return contestants;
+};
+
+const getContestants: (n: number) => Promise<{
+  cats: Contestants;
+  dogs: Contestants;
+}> = async (n) => {
+  const [catImages, dogImages] = await Promise.all([
+    getAnimalImages(catApiUrl),
+    getAnimalImages(dogApiUrl),
+  ]);
+  return {
+    cats: createContestants(catImages.slice(0, n)),
+    dogs: createContestants(dogImages.slice(0, n)),
+  };
 };
