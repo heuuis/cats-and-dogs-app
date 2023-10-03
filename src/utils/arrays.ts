@@ -5,14 +5,11 @@
  * @param arr2 - Second array of arrays
  * @returns - Merged array of arrays
  */
-export const alternateMergeArrays = (
-  arr1: string[][],
-  arr2: string[][]
-): string[][] => {
-  let result: string[][] = [arr1.pop()!];
+export const alternateMergeArrays = (arr1: any[][], arr2: any[][]): any[][] => {
+  let result: any[][] = [arr1.pop()!];
 
   while (arr2.length) {
-    let subArr2: string[] = [];
+    let subArr2: any[] = [];
     while (arr2.length) {
       let temp = arr2.pop()!;
       if (temp.length) {
@@ -26,7 +23,7 @@ export const alternateMergeArrays = (
     if (!arr1.length) {
       break;
     }
-    let subArr1: string[] = [];
+    let subArr1: any[] = [];
     while (arr1.length) {
       let temp = arr1.pop()!;
       if (temp.length) {
@@ -40,3 +37,6 @@ export const alternateMergeArrays = (
   }
   return result.reverse();
 };
+
+export const getRandomElement = (array: any[]) =>
+  array[Math.floor(Math.random() * array.length)];

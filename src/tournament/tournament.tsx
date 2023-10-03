@@ -12,6 +12,7 @@ import { TournamentMenu } from "./tournament-menu";
 import { Leaderboard } from "./leaderboard";
 import { CutenessContest } from "./cuteness-contest";
 import { Layout } from "../layout";
+import { getRandomElement } from "../utils/arrays";
 
 export const Tournament = () => {
   const [numberOfContestants, setNumberOfContestants] = useState(4);
@@ -101,9 +102,23 @@ export const Tournament = () => {
     );
 
     const validComparisons = resultsRef.current.getValidComparisons();
+
+    // This function selects a random newCat which is different from currentCat and
+    // a random newDog which is different from currentDog if validComparisons has
+    // such a pair available, or a random pair if validComparisons has no such pair
+    const getNewPair = (validComparisons: [string, string][]) => {
+      const filteredPairs = validComparisons.filter(
+        ([cat, dog]) => cat !== currentCat && dog !== currentDog
+      );
+      const chosenPair =
+        filteredPairs.length > 0
+          ? getRandomElement(filteredPairs)
+          : getRandomElement(validComparisons);
+      return chosenPair;
+    };
+
     if (validComparisons.length > 0) {
-      const [newCat, newDog] =
-        validComparisons[Math.floor(Math.random() * validComparisons.length)];
+      const [newCat, newDog] = getNewPair(validComparisons);
       // console.log(
       //   `currentCat: ${currentCat}, newCat: ${newCat}, currentDog: ${currentDog}, newDog: ${newDog}`
       // );
