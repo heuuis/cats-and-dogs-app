@@ -2,12 +2,12 @@ import "./tournament.scss";
 import { useEffect, useRef, useState } from "react";
 import { catApiUrl, dogApiUrl } from "../values";
 import {
-  Contestants,
+  ImagesById,
   ContestantCategory,
   TournamentState,
   Image,
 } from "./interfaces";
-import { TournamentResults } from "./tournament-results";
+import * as TournamentResults from "./tournament-results";
 import { TournamentMenu } from "./tournament-menu";
 import { Leaderboard } from "./leaderboard";
 import { CutenessContest } from "./cuteness-contest";
@@ -16,14 +16,11 @@ import { getRandomElement } from "../utils/arrays";
 
 export const Tournament = () => {
   const [numberOfContestants, setNumberOfContestants] = useState(4);
-  const [catContestants, setCatContestants] = useState<Contestants>({});
-  const [dogContestants, setDogContestants] = useState<Contestants>({});
+  const [catImages, setCatImages] = useState<ImagesById>({});
+  const [dogImages, setDogImages] = useState<ImagesById>({});
   const [currentCat, setCurrentCat] = useState("");
   const [currentDog, setCurrentDog] = useState("");
-
-  const resultsRef = useRef<ReturnType<typeof TournamentResults>>(
-    TournamentResults()
-  );
+  const [results, setResults] = useState(TournamentResults.create);
 
   const [tournamentState, setTournamentState] = useState(
     "start" as TournamentState
@@ -38,15 +35,14 @@ export const Tournament = () => {
     let isMounted = true;
 
     console.log("Getting new contestants");
-    getContestants(numberOfContestants).then(({ cats, dogs }) => {
+    getImagesById(numberOfContestants).then(({ cats, dogs }) => {
       if (isMounted) {
-        setCatContestants(cats);
-        setDogContestants(dogs);
+        setCatImages(cats);
+        setDogImages(dogs);
         setCurrentCat(Object.keys(cats)[0]);
         setCurrentDog(Object.keys(dogs)[0]);
-        resultsRef.current = TournamentResults(
-          new Set(Object.keys(cats)),
-          new Set(Object.keys(dogs))
+        setResults(
+          TournamentResults.create(Object.keys(cats), Object.keys(dogs))
         );
       }
     });
@@ -56,39 +52,51 @@ export const Tournament = () => {
     };
   }, [tournamentState, numberOfContestants]);
 
+  // There is some complex logic here and this should be put into a reducer instead
   const handleWin = (winningAnimal: ContestantCategory) => {
     const losingAnimal = winningAnimal === "cat" ? "dog" : "cat";
     const winner = winningAnimal === "cat" ? currentCat : currentDog;
     const loser = losingAnimal === "cat" ? currentCat : currentDog;
 
-    resultsRef.current.addResult(
-      { type: winningAnimal, id: winner },
-      { type: losingAnimal, id: loser }
+    // The current results, with the new win result added
+    const updatedResults = TournamentResults.addResult(
+      results,
+      { id: winner, category: winningAnimal },
+      { id: loser, category: losingAnimal }
     );
 
-    const validComparisons = resultsRef.current.getValidComparisons();
+    // adding all the inferred results
+    const extendedResults =
+      TournamentResults.getExtendedResults(updatedResults);
+
+    // Selecting only the inferred results
+    const derivedResults = TournamentResults.getResultsDifference(
+      extendedResults,
+      updatedResults
+    );
+
+    setResults(extendedResults);
+
+    const validFixtures = TournamentResults.getValidFixtures(updatedResults);
 
     // This function selects a random newCat which is different from currentCat and
-    // a random newDog which is different from currentDog if validComparisons has
-    // such a pair available, or a random pair if validComparisons has no such pair
-    const getNewPair = (validComparisons: [string, string][]) => {
-      const filteredPairs = validComparisons.filter(
-        ([cat, dog]) => cat !== currentCat && dog !== currentDog
+    // a random newDog which is different from currentDog if validFixtures has
+    // such a pair available, or a random pair if validFixtures has no such pair
+    const getNewFixture = (
+      validFixtures: TournamentResults.Fixture[]
+    ): TournamentResults.Fixture => {
+      const filteredFixtures = validFixtures.filter(
+        ({ cat, dog }) => cat !== currentCat && dog !== currentDog
       );
-      const chosenPair =
-        filteredPairs.length > 0
-          ? getRandomElement(filteredPairs)
-          : getRandomElement(validComparisons);
-      return chosenPair;
+      return filteredFixtures.length > 0
+        ? getRandomElement(filteredFixtures)
+        : getRandomElement(validFixtures);
     };
 
-    if (validComparisons.length > 0) {
-      const [newCat, newDog] = getNewPair(validComparisons);
-      // console.log(
-      //   `currentCat: ${currentCat}, newCat: ${newCat}, currentDog: ${currentDog}, newDog: ${newDog}`
-      // );
-      setCurrentCat(newCat);
-      setCurrentDog(newDog);
+    if (validFixtures.length > 0) {
+      const { cat, dog } = getNewFixture(validFixtures);
+      setCurrentCat(cat);
+      setCurrentDog(dog);
     } else {
       // All comparisons have been made
       setTournamentState("end");
@@ -113,13 +121,13 @@ export const Tournament = () => {
             id="tournament-progress"
             value={
               numberOfContestants * numberOfContestants -
-              resultsRef.current.getValidComparisons().length
+              TournamentResults.getValidFixtures(results).length
             }
             max={numberOfContestants * numberOfContestants}
           />
           <CutenessContest
-            cat={catContestants[currentCat] || ""}
-            dog={dogContestants[currentDog] || ""}
+            cat={catImages[currentCat] || ""}
+            dog={dogImages[currentDog] || ""}
             onWinnerSelected={handleWin}
           />
         </>
@@ -128,11 +136,12 @@ export const Tournament = () => {
     case "end":
       pageContent = (
         <Leaderboard
-          rankings={resultsRef.current
-            .getRankings()
+          rankings={TournamentResults.getRankings(results)
             .reverse()
             .map((group) =>
-              group.map((id) => catContestants[id] || dogContestants[id])
+              group.map(({ id, category }) =>
+                category === "cat" ? catImages[id] : dogImages[id]
+              )
             )}
         />
       );
@@ -146,9 +155,7 @@ export const Tournament = () => {
   );
 };
 
-const getAnimalImages: (apiUrl: string) => Promise<Image[]> = async (
-  apiUrl
-) => {
+const getAnimalImages = async (apiUrl: string): Promise<Image[]> => {
   try {
     const response = await fetch(`${apiUrl}/v1/images/search?limit=10`);
     if (!response.ok) {
@@ -161,22 +168,24 @@ const getAnimalImages: (apiUrl: string) => Promise<Image[]> = async (
   }
 };
 
-const createContestants = (images: Image[]) => {
-  const contestants: Contestants = {};
+const mapIdsToImages = (images: Image[]): ImagesById => {
+  const contestants: ImagesById = {};
   images.forEach((img) => (contestants[img.id] = img));
   return contestants;
 };
 
-const getContestants: (n: number) => Promise<{
-  cats: Contestants;
-  dogs: Contestants;
-}> = async (n) => {
+const getImagesById = async (
+  n: number
+): Promise<{
+  cats: ImagesById;
+  dogs: ImagesById;
+}> => {
   const [catImages, dogImages] = await Promise.all([
     getAnimalImages(catApiUrl),
     getAnimalImages(dogApiUrl),
   ]);
   return {
-    cats: createContestants(catImages.slice(0, n)),
-    dogs: createContestants(dogImages.slice(0, n)),
+    cats: mapIdsToImages(catImages.slice(0, n)),
+    dogs: mapIdsToImages(dogImages.slice(0, n)),
   };
 };

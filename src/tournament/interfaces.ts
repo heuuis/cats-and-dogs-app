@@ -5,7 +5,7 @@ export interface Image {
   height: number;
 }
 
-export interface Contestants {
+export interface ImagesById {
   [id: string]: Image;
 }
 
