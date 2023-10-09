@@ -1,5 +1,5 @@
 import "./tournament.scss";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { catApiUrl, dogApiUrl } from "../values";
 import {
   ImagesById,
@@ -136,13 +136,11 @@ export const Tournament = () => {
     case "end":
       pageContent = (
         <Leaderboard
-          rankings={TournamentResults.getRankings(results)
-            .reverse()
-            .map((group) =>
-              group.map(({ id, category }) =>
-                category === "cat" ? catImages[id] : dogImages[id]
-              )
-            )}
+          rankings={TournamentResults.getRankings(results).map((group) =>
+            group.map(({ id, category }) =>
+              category === "cat" ? catImages[id] : dogImages[id]
+            )
+          )}
         />
       );
       break;

@@ -74,6 +74,39 @@ const doesCauseCycle = (
   return dfs(toNodeId);
 };
 
+const hasCycle = (dag: DAG): boolean => {
+  const visited = new Set<string>();
+  const stack = new Set<string>();
+
+  const isCyclic = (node: string): boolean => {
+    if (!visited.has(node)) {
+      visited.add(node);
+      stack.add(node);
+
+      const children = dag.get(node) || new Set<string>();
+      for (const child of children) {
+        if (!visited.has(child) && isCyclic(child)) {
+          return true;
+        } else if (stack.has(child)) {
+          // If the child is in the stack, it's part of a cycle
+          return true;
+        }
+      }
+    }
+
+    stack.delete(node); // Remove the node from the stack when done processing
+    return false;
+  };
+
+  for (const node of dag.keys()) {
+    if (isCyclic(node)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 const getTopologicalSort = (dag: DAG): string[] => {
   const indegrees: { [key: string]: number } = {};
   const topologicalOrdering: string[] = [];
@@ -101,7 +134,7 @@ const getTopologicalSort = (dag: DAG): string[] => {
     }
   }
 
-  if (topologicalOrdering.length != dag.size) {
+  if (topologicalOrdering.length !== dag.size) {
     throw new Error(
       `Invalid DAG: Cycle detected. ${topologicalOrdering.length} elements in ordering but ${dag.size} nodes in DAG`
     );
@@ -159,15 +192,39 @@ const getEdgesDifference = (dag: DAG, removeDag: DAG): DAG => {
   return resultDag;
 };
 
+const mergeDAGs = (dagA: DAG, dagB: DAG): DAG => {
+  let resultDag = cloneDeep(dagA);
+
+  for (const [node, children] of dagB) {
+    if (resultDag.has(node)) {
+      // If the node already exists in resultDag, merge its children
+      const existingChildren = resultDag.get(node)!;
+      for (const child of children) {
+        existingChildren.add(child);
+      }
+    } else {
+      // If the node doesn't exist in dagA, add it with its children
+      resultDag.set(node, children);
+    }
+  }
+
+  if (hasCycle(resultDag)) {
+    throw new Error("Tried to merge DAGs but result is not acyclic");
+  }
+  return resultDag;
+};
+
 export {
   createDAG,
   addNode,
   validateCanAddEdge,
   addEdge,
   doesCauseCycle,
+  hasCycle,
   getTopologicalSort,
   getTransitiveClosure,
   getEdgesDifference,
+  mergeDAGs,
 };
 
 // export type Node = {

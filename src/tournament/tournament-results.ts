@@ -1,12 +1,12 @@
-import { alternateMergeArrays } from "../utils/arrays";
+import { cloneDeep } from "lodash";
 import {
   DAG,
-  createDAG,
   addEdge,
   validateCanAddEdge,
   getTransitiveClosure,
   getTopologicalSort,
   getEdgesDifference,
+  mergeDAGs,
 } from "./dag";
 import { ContestantCategory } from "./interfaces";
 
@@ -108,7 +108,7 @@ const dagToResults = (dag: DAG): ContestantResults[] =>
     defeatedOpponents: new ContestantSet(
       [...children]
         .map(unhash)
-        .filter((opponent) => opponent.category != unhash(node).category)
+        .filter((opponent) => opponent.category !== unhash(node).category)
     ),
   }));
 
@@ -258,6 +258,20 @@ const getContestantResults = (
   return result;
 };
 
+const mergeResults = (
+  resultsA: ContestantResults[],
+  resultsB: ContestantResults[]
+): ContestantResults[] => {
+  const dagA = resultsToDag(resultsA);
+  const dagB = resultsToDag(resultsB);
+  try {
+    const mergedDag = mergeDAGs(dagA, dagB);
+    return dagToResults(mergedDag);
+  } catch (error) {
+    throw new Error("Cannot merge results as it would cause a cycle");
+  }
+};
+
 export {
   create,
   addContestant,
@@ -270,4 +284,5 @@ export {
   getExtendedResults,
   getResultsDifference,
   getContestantResults,
+  mergeResults,
 };

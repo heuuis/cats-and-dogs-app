@@ -7,6 +7,8 @@ import {
   getTopologicalSort,
   getTransitiveClosure,
   getEdgesDifference,
+  mergeDAGs,
+  hasCycle,
 } from "./dag";
 import { cloneDeep } from "lodash";
 
@@ -284,5 +286,58 @@ describe("Directed Acyclic Graph", () => {
     const resultDag = getEdgesDifference(dag, initialDag);
 
     expect(resultDag).toEqual(expectedDag);
+  });
+
+  it("can find no cycle in valid dag object", () => {
+    const dag: DAG = new Map([
+      ["A", new Set(["B", "C"])],
+      ["B", new Set(["D"])],
+      ["C", new Set(["E"])],
+      ["D", new Set()],
+      ["E", new Set()],
+    ]);
+
+    expect(hasCycle(dag)).toBe(false);
+  });
+
+  it("can find cycle in invalid dag object", () => {
+    const dagWithCycle: DAG = new Map([
+      ["A", new Set(["B"])],
+      ["B", new Set(["C"])],
+      ["C", new Set(["A"])],
+    ]);
+
+    expect(hasCycle(dagWithCycle)).toBe(true);
+  });
+
+  it("can merge DAGs if result is a DAG", () => {
+    let initialDag = createDAG(["A", "B", "C"]);
+    initialDag = addEdge(initialDag, "A", "B");
+
+    const dagA = addEdge(initialDag, "A", "C");
+    const dagB = addEdge(initialDag, "B", "C");
+
+    let expectedDag = addEdge(initialDag, "A", "C");
+    expectedDag = addEdge(expectedDag, "B", "C");
+
+    const resultDag = mergeDAGs(dagA, dagB);
+
+    expect(resultDag).toEqual(expectedDag);
+  });
+
+  it("cannot merge DAGs if result is not acyclic", () => {
+    let initialDag = createDAG(["A", "B", "C"]);
+    initialDag = addEdge(initialDag, "A", "B");
+
+    const dagA = addEdge(initialDag, "C", "A");
+    const dagB = addEdge(initialDag, "B", "C");
+
+    const tryAddDAGsWithCyclicResult = () => {
+      mergeDAGs(dagA, dagB);
+    };
+
+    expect(tryAddDAGsWithCyclicResult).toThrow(
+      "Tried to merge DAGs but result is not acyclic"
+    );
   });
 });
