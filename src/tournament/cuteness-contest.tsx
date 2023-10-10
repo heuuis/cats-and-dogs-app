@@ -23,6 +23,11 @@ export const CutenessContest = (props: CutenessContestProps) => {
 
   const [catImageRendered, setCatImageRendered] = useState(false);
   const [dogImageRendered, setDogImageRendered] = useState(false);
+  const handleWinnerSelected = (contestant: ContestantCategory) => {
+    setCatImageRendered(false);
+    setDogImageRendered(false);
+    onWinnerSelected(contestant);
+  };
 
   return (
     <>
@@ -31,7 +36,7 @@ export const CutenessContest = (props: CutenessContestProps) => {
           <button
             className="contestant-btn"
             ref={catRef}
-            onClick={() => onWinnerSelected("cat")}
+            onClick={() => handleWinnerSelected("cat")}
             disabled={!(catImageRendered && dogImageRendered)}
           >
             <ImageDisplay
@@ -45,7 +50,7 @@ export const CutenessContest = (props: CutenessContestProps) => {
           <button
             className="contestant-btn"
             ref={dogRef}
-            onClick={() => onWinnerSelected("dog")}
+            onClick={() => handleWinnerSelected("dog")}
             disabled={!(catImageRendered && dogImageRendered)}
           >
             <ImageDisplay
