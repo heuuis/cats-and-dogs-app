@@ -9,6 +9,7 @@ import {
   getEdgesDifference,
   mergeDAGs,
   hasCycle,
+  removeEdge,
 } from "./dag";
 import { cloneDeep } from "lodash";
 
@@ -44,17 +45,6 @@ describe("Directed Acyclic Graph", () => {
     expect(dag).toEqual(expectedDag);
   });
 
-  it("adds edges as values in map", () => {
-    let expectedDag: DAG = new Map<string, Set<string>>();
-    expectedDag.set("A", new Set<string>(["B"]));
-    expectedDag.set("B", new Set<string>());
-    let dag = createDAG(["A", "B"]);
-
-    dag = addEdge(dag, "A", "B");
-
-    expect(dag).toEqual(expectedDag);
-  });
-
   it("can add new node", () => {
     const dag = addNode(initialDag, "test");
 
@@ -71,14 +61,12 @@ describe("Directed Acyclic Graph", () => {
     expect(tryAddSameNode).toThrow(`Node with id "test" already exists in DAG`);
   });
 
-  it("can add existing edge", () => {
-    let dag = createDAG(["A", "B"]);
+  it("add node does not mutate passed argument", () => {
+    const expectedDag: DAG = cloneDeep(initialDag);
 
-    dag = addEdge(dag, "A", "B");
-    dag = addEdge(dag, "A", "B");
+    addNode(initialDag, "A");
 
-    expect(dag.get("A")).toEqual(new Set(["B"]));
-    expect(dag.get("B")).toEqual(new Set());
+    expect(initialDag).toEqual(expectedDag);
   });
 
   it("recognises does not cause cycle", () => {
@@ -87,6 +75,14 @@ describe("Directed Acyclic Graph", () => {
     dag = addEdge(dag, "B", "C");
 
     expect(doesCauseCycle(dag, "A", "C")).toBeFalsy();
+  });
+
+  it("recognises does cause cycle", () => {
+    let dag = createDAG(["A", "B", "C"]);
+    dag = addEdge(dag, "A", "B");
+    dag = addEdge(dag, "B", "C");
+
+    expect(doesCauseCycle(dag, "C", "A")).toBeTruthy();
   });
 
   it("can add valid edge", () => {
@@ -101,12 +97,25 @@ describe("Directed Acyclic Graph", () => {
     expect(dag.get("C")).toEqual(new Set());
   });
 
-  it("recognises does cause cycle", () => {
-    let dag = createDAG(["A", "B", "C"]);
-    dag = addEdge(dag, "A", "B");
-    dag = addEdge(dag, "B", "C");
+  it("adds edges as values in map", () => {
+    let expectedDag: DAG = new Map<string, Set<string>>();
+    expectedDag.set("A", new Set<string>(["B"]));
+    expectedDag.set("B", new Set<string>());
+    let dag = createDAG(["A", "B"]);
 
-    expect(doesCauseCycle(dag, "C", "A")).toBeTruthy();
+    dag = addEdge(dag, "A", "B");
+
+    expect(dag).toEqual(expectedDag);
+  });
+
+  it("can add existing edge", () => {
+    let dag = createDAG(["A", "B"]);
+
+    dag = addEdge(dag, "A", "B");
+    dag = addEdge(dag, "A", "B");
+
+    expect(dag.get("A")).toEqual(new Set(["B"]));
+    expect(dag.get("B")).toEqual(new Set());
   });
 
   it("cannot add edge to self", () => {
@@ -157,14 +166,6 @@ describe("Directed Acyclic Graph", () => {
     );
   });
 
-  it("add node does not mutate passed argument", () => {
-    const expectedDag: DAG = cloneDeep(initialDag);
-
-    addNode(initialDag, "A");
-
-    expect(initialDag).toEqual(expectedDag);
-  });
-
   it("add edge does not mutate passed argument", () => {
     let initialDag: DAG = createDAG(["A", "B"]);
     const expectedDag: DAG = cloneDeep(initialDag);
@@ -173,6 +174,17 @@ describe("Directed Acyclic Graph", () => {
 
     expect(initialDag).toEqual(expectedDag);
     expect(initialDag.get("A")).toEqual(new Set());
+  });
+
+  it("can remove edge", () => {
+    const initialDag = createDAG(["A", "B"]);
+    const dag = addEdge(initialDag, "A", "B");
+    expect(removeEdge(dag, "A", "B")).toEqual(initialDag);
+  });
+
+  it("can remove non-existant edge", () => {
+    const initialDag = createDAG(["A", "B"]);
+    expect(removeEdge(initialDag, "A", "B")).toEqual(initialDag);
   });
 
   it("can get topological sort of disjoint dag", () => {

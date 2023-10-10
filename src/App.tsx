@@ -1,10 +1,10 @@
 import "./style.scss";
 import { Routes, Route } from "react-router-dom";
-import { Tournament } from "./tournament/tournament";
 import { Cats } from "./cats/cats";
 import { Dogs } from "./dogs/dogs";
 import { Home } from "./home";
 import { NavBar } from "./navbar/navbar";
+import { TournamentPage } from "./tournament/tournament-page";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cats" element={<Cats />} />
           <Route path="/dogs" element={<Dogs />} />
-          <Route path="/tournament" element={<Tournament />} />
+          <Route path="/tournament" element={<TournamentPage />} />
           <Route
             path="/github"
             Component={() => {

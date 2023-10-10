@@ -1,4 +1,3 @@
-import { cloneDeep } from "lodash";
 import {
   DAG,
   addEdge,
@@ -7,6 +6,7 @@ import {
   getTopologicalSort,
   getEdgesDifference,
   mergeDAGs,
+  removeEdge,
 } from "./dag";
 import { ContestantCategory } from "./interfaces";
 
@@ -171,6 +171,16 @@ const addResult = (
   );
 };
 
+const removeResult = (
+  results: ContestantResults[],
+  winner: Contestant,
+  loser: Contestant
+): ContestantResults[] => {
+  return dagToResults(
+    removeEdge(resultsToDag(results), hash(winner), hash(loser))
+  );
+};
+
 const getValidFixtures = (results: ContestantResults[]): Fixture[] => {
   const allContestants = results.map(({ contestant }) => contestant);
 
@@ -276,6 +286,7 @@ export {
   create,
   addContestant,
   addResult,
+  removeResult,
   validateCanAddResult,
   getValidFixtures,
   getRankings,

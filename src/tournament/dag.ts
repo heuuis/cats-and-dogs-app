@@ -52,6 +52,18 @@ const addEdge = (dag: DAG, fromNodeId: string, toNodeId: string): DAG => {
   return updatedDag;
 };
 
+const removeEdge = (dag: DAG, fromNodeId: string, toNodeId: string): DAG => {
+  validateHasNode(dag, fromNodeId);
+  if (!dag.get(fromNodeId)!.has(toNodeId)) {
+    // return early if non-existant edge
+    return cloneDeep(dag);
+  }
+
+  let updatedDag = cloneDeep(dag);
+  updatedDag.get(fromNodeId)!.delete(toNodeId);
+  return updatedDag;
+};
+
 const doesCauseCycle = (
   dag: DAG,
   fromNodeId: string,
@@ -219,6 +231,7 @@ export {
   addNode,
   validateCanAddEdge,
   addEdge,
+  removeEdge,
   doesCauseCycle,
   hasCycle,
   getTopologicalSort,
