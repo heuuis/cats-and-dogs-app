@@ -69,7 +69,9 @@ export const TournamentPage = () => {
         <Leaderboard
           rankings={getRankings(tournamentResults.totalResults).map((group) =>
             group.map(({ id, category }) =>
-              category === "cat" ? catImages[id] : dogImages[id]
+              category === "cat"
+                ? { ...catImages[id], category }
+                : { ...dogImages[id], category }
             )
           )}
         />

@@ -25,8 +25,6 @@ type TournamentResultsInfoActionType = "add" | "remove";
 
 interface TournamentResultsInfoAction {
   type: TournamentResultsInfoActionType;
-  cats?: string[];
-  dogs?: string[];
   winner?: Contestant;
   loser?: Contestant;
 }

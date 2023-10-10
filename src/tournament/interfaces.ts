@@ -5,6 +5,14 @@ export interface Image {
   height: number;
 }
 
+export interface CategorisedImage {
+  category: ContestantCategory;
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}
+
 export interface ImagesById {
   [id: string]: Image;
 }

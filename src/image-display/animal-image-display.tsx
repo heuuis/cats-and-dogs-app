@@ -3,14 +3,12 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import PetsIcon from "@mui/icons-material/Pets";
 import { ImageDisplay } from "./image-display";
+import { capitalise } from "../utils/strings";
 
 interface AnimalDisplayProps {
   animalName: string;
   getAnimalImagesQuery: (n: number) => string;
 }
-
-const capitalise = (str: string) =>
-  str.length === 0 ? str : str.charAt(0).toUpperCase() + str.slice(1);
 
 export const AnimalImageDisplay = ({
   animalName,
