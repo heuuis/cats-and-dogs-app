@@ -89,7 +89,29 @@
       > li {
         // Direct child list items of the inner list
         margin: 0 10px; // Adds some horizontal spacing between the images
+
+        .image {
+          border-radius: 2rem;
+        }
       }
     }
+  }
+}
+
+.cat-win-leaderboard {
+  background-color: var(--bg-cats);
+  color: var(--bg-primary);
+  h3 {
+    margin: 0;
+    padding: 2rem;
+  }
+}
+
+.dog-win-leaderboard {
+  background-color: var(--bg-dogs);
+  color: var(--bg-primary);
+  h3 {
+    margin: 0;
+    padding: 2rem;
   }
 }

@@ -1,5 +1,5 @@
 import "./tournament.scss";
-import { CategorisedImage } from "./interfaces";
+import { CategorisedImage, ContestantCategory } from "./interfaces";
 import { ImageItemDisplay } from "../image-display/image-item-display";
 import { capitalise } from "../utils/strings";
 
@@ -36,10 +36,15 @@ export const Leaderboard = ({
 }: {
   rankings: CategorisedImage[][];
 }) => {
+  const winningAnimal: ContestantCategory = rankings[0][0].category;
   return (
-    <>
-      <h3>{capitalise(rankings[0][0].category)}s win!</h3>
+    <div className={`${winningAnimal}-win-leaderboard`}>
+      <h3>
+        {capitalise(winningAnimal)}s win! Here are your animals in order of
+        cuteness:
+      </h3>
       <CutenessList cutenessOrdering={rankings} />
-    </>
+      <h3>Thanks for playing!</h3>
+    </div>
   );
 };
