@@ -5,6 +5,7 @@ import { Dogs } from "./dogs/dogs";
 import { Home } from "./home";
 import { NavBar } from "./navbar/navbar";
 import { TournamentPage } from "./tournament/tournament-page";
+import { SpellingBeeHelper } from "./spelling-bee-helper/spelling-bee-helper";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               return null;
             }}
           />
+          <Route path="/spelling-bee-helper" element={<SpellingBeeHelper />} />
         </Routes>
       </main>
     </>

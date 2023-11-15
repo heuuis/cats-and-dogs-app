@@ -1,0 +1,34 @@
+.spelling-bee-helper {
+  color: white;
+  height: 100%;
+  padding-top: 2rem;
+
+  ul {
+    display: flex; // Using flexbox to create a flexible layout
+    flex-wrap: wrap; // Allowing items to wrap as needed
+    justify-content: flex-start; // Aligning items to the start of the container
+    list-style: none; // Removing default list styling
+    padding: 0; // Removing default padding
+    margin: 0; // Removing default margin
+    li {
+      flex-basis: calc(
+        100% / 10
+      ); // Adjust the number 3 to increase/decrease the number of columns
+      box-sizing: border-box; // Including padding and border in the element's total width and height
+      padding: 5px; // Adding some padding around each word for better readability
+
+      // Optional: Add a border or background to each word for clarity
+      border: 1px solid #ddd;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+  }
+}
+
+.req-letter-input {
+  width: 1rem;
+}
+
+.other-letters-input {
+  width: 6rem;
+}
