@@ -3,6 +3,10 @@
   height: 100%;
   padding-top: 2rem;
 
+  h4 {
+    text-align: left;
+  }
+
   ul {
     display: flex; // Using flexbox to create a flexible layout
     flex-wrap: wrap; // Allowing items to wrap as needed

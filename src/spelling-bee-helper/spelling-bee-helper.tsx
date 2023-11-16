@@ -7,6 +7,10 @@ type FormData = {
   otherLetters: string;
 };
 
+interface GroupedWords {
+  [key: number]: string[];
+}
+
 const initialFormData: FormData = {
   requiredLetter: "",
   otherLetters: "",
@@ -98,9 +102,31 @@ export const SpellingBeeHelper = () => {
   }, []);
 
   const renderedWords = useMemo(() => {
-    // Sort the words by length in descending order
-    const sortedWords = [...filteredWords].sort((a, b) => b.length - a.length);
-    return sortedWords.map((word) => <li key={word}>{word}</li>);
+    // Function to group words by their length
+    const groupWordsByLength = (words: string[]): GroupedWords => {
+      return words.reduce((acc: GroupedWords, word: string) => {
+        acc[word.length] = [...(acc[word.length] || []), word];
+        return acc;
+      }, {});
+    };
+
+    // Grouping words
+    const groupedWords = groupWordsByLength(filteredWords);
+
+    // Sorting groups by length and mapping to JSX
+    return Object.entries(groupedWords)
+      .sort(([lengthA], [lengthB]) => parseInt(lengthB) - parseInt(lengthA)) // Sort groups by word length
+      .map(([length, words]) => (
+        <>
+          <h4>{length} letter words:</h4>
+          <ul key={length}>
+            {words.map((word: string) => (
+              <li key={word}>{word}</li>
+            ))}
+          </ul>
+          <br />
+        </>
+      ));
   }, [filteredWords]);
 
   return (
@@ -115,7 +141,7 @@ export const SpellingBeeHelper = () => {
           Clear!
         </button>
         <br />
-        <ul>{renderedWords}</ul>
+        {renderedWords}
       </div>
     </Layout>
   );
