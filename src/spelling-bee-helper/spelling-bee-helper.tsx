@@ -97,10 +97,11 @@ export const SpellingBeeHelper = () => {
     setFilteredWords(words);
   }, []);
 
-  const renderedWords = useMemo(
-    () => filteredWords.map((word) => <li key={word}>{word}</li>),
-    [filteredWords]
-  );
+  const renderedWords = useMemo(() => {
+    // Sort the words by length in descending order
+    const sortedWords = [...filteredWords].sort((a, b) => b.length - a.length);
+    return sortedWords.map((word) => <li key={word}>{word}</li>);
+  }, [filteredWords]);
 
   return (
     <Layout title="Spelling Bee Helper!">
