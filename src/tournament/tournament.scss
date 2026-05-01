@@ -77,14 +77,17 @@
     // Direct child list items
     height: 10%;
     margin: 10px 0; // Adds some vertical spacing between the groups
+    display: flex;
+    flex-wrap: nowrap;
 
     .equally-cute {
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       list-style-type: none; // Removes the default bullet points of the inner list
       padding: 0; // Removes the default padding of the inner list
+      width: 100%;
 
       > li {
         // Direct child list items of the inner list
@@ -92,6 +95,8 @@
 
         .image {
           border-radius: 2rem;
+          max-width: 100%; // Ensure images don't exceed their container
+          height: auto; // Maintain aspect ratio
         }
       }
     }

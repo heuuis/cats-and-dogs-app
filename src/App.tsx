@@ -6,6 +6,7 @@ import { Home } from "./home";
 import { NavBar } from "./navbar/navbar";
 import { TournamentPage } from "./tournament/tournament-page";
 import { SpellingBeeHelper } from "./spelling-bee-helper/spelling-bee-helper";
+import { WordleHelper } from "./wordle-helper/wordle-helper";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             }}
           />
           <Route path="/spelling-bee-helper" element={<SpellingBeeHelper />} />
+          <Route path="/wordle-helper" element={<WordleHelper />} />
         </Routes>
       </main>
     </>

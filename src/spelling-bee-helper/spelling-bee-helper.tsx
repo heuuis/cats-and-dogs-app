@@ -1,6 +1,7 @@
 import "./spelling-bee-helper.scss";
 import { Layout } from "../layout";
 import { useCallback, useMemo, useState } from "react";
+import { DistinctLettersSelector } from "./letter-selector";
 
 type FormData = {
   requiredLetter: string;
@@ -36,10 +37,28 @@ const SpellingBeeHelperInfoForm = ({ onSubmit }: { onSubmit: Function }) => {
     },
     [formData, onSubmit]
   );
+  const [selectedLetters, setSelectedLetters] = useState(new Set<string>());
+
+  const handleLetterToggle = (letter: string) => {
+    setSelectedLetters((prevSelectedLetters) => {
+      const newSet = new Set(prevSelectedLetters);
+      if (newSet.has(letter)) {
+        newSet.delete(letter);
+      } else {
+        newSet.add(letter);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Give the spelling bee information:</h2>
+      <DistinctLettersSelector
+        selectedLetters={selectedLetters}
+        onLetterToggle={handleLetterToggle}
+      />
+      <br />
       <label htmlFor="reqletter">Required Letter: </label>
       <input
         required

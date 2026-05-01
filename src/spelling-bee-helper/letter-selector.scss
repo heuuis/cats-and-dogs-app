@@ -1,0 +1,22 @@
+.my-letter-selector {
+  ul {
+    list-style: none; // Removes default list styling
+    padding: 0; // Removes default padding
+    margin: 0 auto; // Removes default margin
+    display: flex; // Enables flexbox layout
+    flex-wrap: wrap; // Allows items to wrap to the next line
+    justify-content: center;
+
+    li {
+      margin: 2px;
+      width: auto;
+      display: inline-flex; // To center the button
+      border: none;
+      flex-basis: auto;
+    }
+
+    button {
+      padding: 5px 10px;
+    }
+  }
+}
